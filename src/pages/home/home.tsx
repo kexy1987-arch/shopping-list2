@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import CreateNewProduct from '../../components/createNewProduct/createNewProduct';
-import GlobalList from '../../components/createNewProduct/globalList/globalList';
+import GlobalList from '../../components/globalList/globalList';
 import styles from './home.module.css'
 
 function Home() {
@@ -16,6 +16,7 @@ function Home() {
 
   return (
     <>
+      <h1>Shopping List</h1>
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("create")}>{activePanel === "create" ? "X": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>

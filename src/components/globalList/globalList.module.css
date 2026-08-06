@@ -1,0 +1,25 @@
+.product-card{
+    width: 90%;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: rgba(255, 228, 196, 0.781);
+    border-radius: 1rem;
+    color: black;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+}
+
+.card-img-container{
+    height: 90%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+}
+
+.card-img{
+    width: 100%;
+}
