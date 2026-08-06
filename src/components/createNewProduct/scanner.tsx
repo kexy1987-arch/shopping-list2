@@ -22,7 +22,8 @@ export default function Scanner({ setData, setShowScanner }:scannerProps){
                 onUpdate={(err, result) => {
                     if(result) {
                         setData(result.getText());
-                        setCheck(result.getText())
+                        setCheck(result.getText());
+                        setShowScanner(false);
                     }
                     if(err){
                         return;

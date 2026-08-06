@@ -36,7 +36,7 @@ export default function CreateNewProduct({setShowCreateNewProduct}: CreateNewPro
         data.append("description", formData.description)
         data.append("barcode", barcode!)
         if ( image ) data.append("image", image!)
-
+        console.log(barcode)
         //fetch here
     }
 
