@@ -1,13 +1,11 @@
-import { useState } from 'react'
-import CreateNewProduct from './components/createNewProduct/createNewProduct'
+import Home from './pages/home/home';
 
 function App() {
-  const [showCreateNewProduct, setShowCreateNewProduct] = useState<boolean>(false);
+  
 
   return (
     <>
-      <button onClick={() => setShowCreateNewProduct(true)}>+</button>
-      {showCreateNewProduct && <CreateNewProduct setShowCreateNewProduct={setShowCreateNewProduct}/>}
+      <Home />
     </>
   )
 }

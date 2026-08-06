@@ -1,0 +1,45 @@
+.btn{
+    position: absolute;
+    right: -0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn:hover{
+    box-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
+}
+
+.btn:hover::after{
+    position: absolute;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    box-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: sans-serif;
+    background: #000;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.new-product-btn {
+    top: 1rem;
+}
+
+.new-product-btn:hover::after{
+    content: "Create New Product";
+}
+
+.global-list-btn {
+    top: 4rem;    
+}
+
+.global-list-btn:hover::after {
+    content: "Open Global List"
+}

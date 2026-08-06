@@ -17,8 +17,8 @@ export default function Scanner({ setData, setShowScanner }:scannerProps){
                 <button onClick={() => setShowScanner(false)}>X</button>
             </header>
             <BarcodeScanner
-                width={500}
-                height={500}
+                width={600}
+                height={600}
                 onUpdate={(err, result) => {
                     if(result) {
                         setData(result.getText());

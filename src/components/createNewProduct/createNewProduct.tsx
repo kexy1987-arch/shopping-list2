@@ -2,11 +2,10 @@ import styles from './createNewProduct.module.css'
 import { useState } from "react"
 import Scanner from './scanner';
 
-type CreateNewProductProps = {
-    setShowCreateNewProduct: (value: boolean) => void,
-}
 
-export default function CreateNewProduct({setShowCreateNewProduct}: CreateNewProductProps){
+
+export default function CreateNewProduct(){
+    const API = import.meta.env.VITE_WORKER_API;
     const [showScanner, setShowScanner] = useState<boolean>(false);
     const [formData, setFormData] = useState({
         name: "",
@@ -14,7 +13,6 @@ export default function CreateNewProduct({setShowCreateNewProduct}: CreateNewPro
         category: "",
         store: "",
         description: "",
-        image_url: "",
     });
     const [image, setImage] = useState<File | null>(null);
     const [barcode, setBarcode] = useState<string | null>("");
@@ -26,25 +24,31 @@ export default function CreateNewProduct({setShowCreateNewProduct}: CreateNewPro
         })
     }
 
-    function handleSubmit(e: React.MouseEvent<HTMLButtonElement>){
+    async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
         const data = new FormData();
-        data.append("name", formData.name)
-        data.append("price", formData.price)
-        data.append("category", formData.category)
-        data.append("store", formData.store)
-        data.append("description", formData.description)
-        data.append("barcode", barcode!)
-        if ( image ) data.append("image", image!)
-        console.log(barcode)
-        //fetch here
+        data.append("name", formData.name);
+        data.append("price", formData.price);
+        data.append("category", formData.category);
+        data.append("store", formData.store);
+        data.append("description", formData.description);
+        if ( barcode ) data.append("barcode", barcode!);
+        if ( image ) data.append("image", image!);
+        
+        const req = await fetch(`${API}/new-product`, {
+            method: "POST",
+            body: data
+        })
+
+        const res = await req.json();
+
+        if ( res.ok ) alert("New Product added to the global list.")
     }
 
     return(
         <>
-            <header className={styles.header}>
-                <h1>Create new product</h1>
-                <button onClick={() => setShowCreateNewProduct(false)}>X</button>
+            <header className="header">
+                <h2>Create new product</h2>
             </header>
             {showScanner && <Scanner setData={setBarcode} setShowScanner={setShowScanner}/>}
             <form>
