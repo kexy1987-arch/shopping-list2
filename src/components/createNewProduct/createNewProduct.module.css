@@ -1,0 +1,20 @@
+.input-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 90%;
+    margin-top: 1rem;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin: 1rem auto;
+}
+
+.scanner{
+    position: absolute;
+    top: 0px;
+    background-color: var(--bg);
+    width: 100%;
+}
