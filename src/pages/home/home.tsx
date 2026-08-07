@@ -2,8 +2,13 @@ import { useState } from 'react'
 import CreateNewProduct from '../../components/createNewProduct/createNewProduct';
 import GlobalList from '../../components/globalList/globalList';
 import styles from './home.module.css'
+import type { user } from '../../utils/types';
 
-function Home() {
+type HomeProps = {
+  user: user
+}
+
+function Home({user}:HomeProps) {
   const [ activePanel, setActivePanel ] = useState<string | null>(null)
 
   function handlePanelToggle(panelName: string){

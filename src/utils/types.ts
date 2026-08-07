@@ -8,3 +8,10 @@ export type product = {
     barcode: string,
     image_url: string,
 }
+
+export type user = {
+    id: number,
+    first_name: string,
+    last_name: string,
+    email: string,
+}
