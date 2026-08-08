@@ -103,3 +103,14 @@ button{
   width: 90%;
   margin: 1rem auto;
 }
+
+span button{
+  margin: 5px;
+}
+
+.z-index{
+  position: absolute;
+  z-index: 9999;
+  background-color: #08060dd3;
+  width: 100%;
+}

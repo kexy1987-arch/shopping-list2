@@ -15,3 +15,24 @@ export type user = {
     last_name: string,
     email: string,
 }
+
+export type ListItem = {
+    id: number,
+    amount: number,
+}
+
+export type DbProduct = {
+    id: number,
+    name: string,
+    price: number,
+    category: string,
+    store: string,
+    description: string,
+    barcode: string | null,
+    image_url: string,
+    created_at: string
+}
+
+export type Stores = {
+    store: string
+}

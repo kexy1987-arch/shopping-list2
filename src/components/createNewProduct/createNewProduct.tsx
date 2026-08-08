@@ -1,5 +1,5 @@
 import styles from './createNewProduct.module.css'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Scanner from './scanner';
 
 
@@ -45,13 +45,33 @@ export default function CreateNewProduct(){
         if ( res.ok ) alert("New Product added to the global list.")
     }
 
+    async function getItemByBarcode(barcode: string | null){
+        if(!barcode)return;
+        const req = await fetch(`${API}/getitembybarcode`, {
+            method: "POST",
+            body: barcode
+        })
+
+        const res = await req.json();
+
+        if(res.ok){
+            console.log("barcode");
+        }
+    }
+
+    useEffect(() => {
+        console.log("BARCODE: ", barcode)
+        getItemByBarcode(barcode);
+    }, [barcode])
+
     return(
-        <>
+        <div className='z-index'>
             <header className="header">
                 <h2>Create new product</h2>
             </header>
             {showScanner && <Scanner setData={setBarcode} setShowScanner={setShowScanner}/>}
             <form>
+                <button type="button" onClick={() => setShowScanner(true)}>Barcode Scanner</button>
                 <div className={styles["input-container"]}>
                     <label htmlFor="name">Product name:</label>
                     <input type="text" id="name" name="name" onChange={(e) => handleInputs(e)}/>
@@ -76,13 +96,8 @@ export default function CreateNewProduct(){
                     <label htmlFor="image">Image:</label>
                     <input type="file" id="image" name="image" accept="image/*" onChange={(e) => setImage(e.target.files![0])} />
                 </div>
-                <button type="button" onClick={() => setShowScanner(true)}>Barcode Scanner</button>
                 <button onClick={(e) => handleSubmit(e)}>Submit</button>
-                
-                
-                
-                
             </form>
-        </>
+        </div>
     )
 }

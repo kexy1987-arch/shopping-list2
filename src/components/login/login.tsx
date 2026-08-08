@@ -34,6 +34,7 @@ export default function Login({setToken, setUser}:LoginProps){
         if(res.ok){
             setUser(res.user)
             setToken(res.token)
+            localStorage.setItem("shopping-list", res.token)
             return;
         }
 

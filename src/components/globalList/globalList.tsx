@@ -2,10 +2,18 @@ import { useEffect, useState } from 'react'
 import type { product } from '../../utils/types';
 import styles from './globalList.module.css'
 import { titleCase } from '../../utils/functions';
+import type { user, ListItem } from '../../utils/types';
 
-export default function GlobalList(){
+type GlobalListProps = {
+    user: user,
+    myList: ListItem[],
+    setMyList: ( value: ListItem[] | ( (prev: ListItem[]) => ListItem[]) ) => void,
+}
+
+export default function GlobalList({user, myList, setMyList}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [list, setList] = useState<product[] | null>(null);
+
 
     async function getProducts() {
         const res = await fetch(`${API}/get-products`)
@@ -20,15 +28,23 @@ export default function GlobalList(){
         getProducts()        
     }, [])
 
-    async function addToMyList(){
-        alert("added")
+    function addToMyList(productId: number){
+        setMyList(prev => {
+            const exist = myList.find(item => item.id === productId);
+
+            if(exist) {
+                return prev.map(item => item.id === productId ? {...item, amount: item.amount + 1 } : item)
+            }
+
+            return [...prev, {id: productId, amount: 1}]
+        })
     }
 
     return(
 
 
 
-        <>
+        <div className='z-index'>
             <header className="header">
                 <h2>Global Product List</h2>
             </header>
@@ -44,14 +60,12 @@ export default function GlobalList(){
                             <p>Category: {titleCase(product.category)}</p>
                         </div>
                         <div>
-                            <button onClick={() => addToMyList()}>Add to my list</button>
+                            <button onClick={() => addToMyList(Number(product.id))}>Add to my list</button>
                         </div>
                     </div>
                 ))
                 : ""
                 }
-            
-            
-        </>
+        </div>
     )
 }
