@@ -27,3 +27,33 @@
     height: 100%;
     object-fit: contain;    
 }
+
+.modal{
+    position: fixed;
+    top: 7.5rem;
+    background-color: green;
+    border-radius: 1rem;
+    height: fit-content;
+}
+
+.description-modal{
+    background-color: var(--modal-bg);
+    width: 100vw;
+    height: 100vh;
+    max-width: 1120px;
+    position: fixed;
+    top: 0;
+    overflow-wrap: break-word;
+    overflow-x: scroll;
+}
+
+.img-container {
+    width: 90%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    margin: 2rem auto;
+}

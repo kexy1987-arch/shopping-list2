@@ -11,6 +11,7 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
+  --modal-bg: rgba(0, 0, 0, 0.884);
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -91,6 +92,7 @@ h2 {
 }
 p {
   margin: 0;
+  width: 100%;
 }
 
 button{
@@ -110,7 +112,7 @@ span button{
 
 .z-index{
   position: absolute;
-  z-index: 9999;
+  z-index: 99;
   background-color: #08060dd3;
   width: 100%;
   max-width: 1124px;

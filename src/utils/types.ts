@@ -7,6 +7,7 @@ export type product = {
     description: string,
     barcode: string,
     image_url: string,
+    created_at: string
 }
 
 export type user = {

@@ -89,7 +89,7 @@ export default function CreateNewProduct(){
     return(
         <div className='z-index'>
             <header className="header">
-                <h2>Create new product</h2>
+                <h2>Create / Update product</h2>
             </header>
             {showScanner && <Scanner setData={setBarcode} setShowScanner={setShowScanner}/>}
             <form>
