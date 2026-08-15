@@ -2,15 +2,14 @@ import { useEffect, useState } from 'react'
 import type { product } from '../../utils/types';
 import styles from './globalList.module.css'
 import { titleCase } from '../../utils/functions';
-import type { user, ListItem } from '../../utils/types';
+import type { ListItem } from '../../utils/types';
 
 type GlobalListProps = {
-    user: user,
     myList: ListItem[],
     setMyList: ( value: ListItem[] | ( (prev: ListItem[]) => ListItem[]) ) => void,
 }
 
-export default function GlobalList({user, myList, setMyList}:GlobalListProps){
+export default function GlobalList({myList, setMyList}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [list, setList] = useState<product[] | null>(null);
 
