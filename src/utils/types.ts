@@ -20,6 +20,7 @@ export type user = {
 export type ListItem = {
     id: number,
     amount: number,
+    bought: boolean
 }
 
 export type DbProduct = {

@@ -23,7 +23,6 @@ export default function GlobalList({myList, setMyList}:GlobalListProps){
     async function getProducts() {
         const res = await fetch(`${API}/get-products`)
         const data = await res.json()
-        console.log(data.list.results)
 
         if ( data.ok ) {
             setList(data.list.results)
@@ -54,7 +53,7 @@ export default function GlobalList({myList, setMyList}:GlobalListProps){
                 return prev.map(item => item.id === productId ? {...item, amount: item.amount + 1 } : item)
             }
 
-            return [...prev, {id: productId, amount: 1}]
+            return [...prev, {id: productId, amount: 1, bought: false}]
         })
     }
 

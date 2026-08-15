@@ -23,7 +23,9 @@ function Home({user}:HomeProps) {
     const res = await req.json();
 
     if(res.ok){
+      
       const list = JSON.parse(res.data.list)
+    //  list.sort((a: ListItem, b: ListItem) => Number(a.bought) - Number(b.bought));
       setMyList(list);
       return;
     }

@@ -5,7 +5,7 @@ import { titleCase } from '../../utils/functions';
 
 type MyListProps = {
     myList: ListItem[],
-    setMyList: (value: ListItem[]) => void,
+    setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
 }
 
 export default function MyList({myList, setMyList}:MyListProps) {
@@ -38,8 +38,11 @@ export default function MyList({myList, setMyList}:MyListProps) {
         const req = await fetch(`${API}/getstores`)
         const res = await req.json();
 
-        if(!res.ok)console.log(res.error);
-        console.log(res)
+        if(!res.ok){
+            console.log(res.error);
+            return;
+        }
+            
         setStores(res.stores)
     }
 
@@ -57,7 +60,6 @@ export default function MyList({myList, setMyList}:MyListProps) {
 
     function deleteItem(id: number){
         const updated = myList.filter(item => item.id !== id);
-        console.log(updated)
         setMyList(updated);
     }
 
@@ -73,6 +75,17 @@ export default function MyList({myList, setMyList}:MyListProps) {
         })
         setPrice(price)
     }
+
+    function buy(item: ListItem) {
+        setMyList((prev) =>
+            prev.map((prevItem) =>
+                prevItem.id === item.id
+                    ? { ...prevItem, bought: !prevItem.bought }
+                    : prevItem
+            )
+        );
+    }
+
 
     useEffect(() => {
         getStoreList();
@@ -100,7 +113,7 @@ export default function MyList({myList, setMyList}:MyListProps) {
                 const itemRef: ListItem | undefined = myList.find(itemRef => item.id === itemRef.id);
                 const amount = itemRef?.amount;
                 return(
-                    <div key={item.id + i} className={styles["my-product-card"]}>                        
+                    <div key={item.id + i} className={styles["my-product-card"]} onClick={() => buy(itemRef!)}>                      
                         <div className={styles["product-info-container"]}>
                             <div className={styles["img-container"]}>
                                 <img src={item.image_url} alt={`Photo of ${item.name}`} />
