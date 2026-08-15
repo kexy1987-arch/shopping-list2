@@ -99,7 +99,7 @@ export default function CreateNewProduct(){
                     <input ref={nameRef} type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
                 </div>
                 <div className={styles["input-container"]}>
-                    <label htmlFor="price">Product price:</label>
+                    <label htmlFor="price">Product price in €:</label>
                     <input ref={priceRef} type="text" id="price" name="price" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
