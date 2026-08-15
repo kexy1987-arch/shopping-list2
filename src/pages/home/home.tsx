@@ -33,7 +33,7 @@ function Home({user}:HomeProps) {
   }
 
   async function updateList() {
-    if(myList.length === 0) return;
+    if(!Array.isArray(myList)) return;
     try{
       const req = await fetch(`${API}/update-list`, {
         method: "POST",
@@ -75,7 +75,7 @@ function Home({user}:HomeProps) {
       {activePanel === "create" && <CreateNewProduct />}
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>
       {activePanel === "global-list" && <GlobalList user={user} myList={myList} setMyList={setMyList}/>}
-      <MyList myList={myList} setMyList={setMyList} user={user}/>
+      <MyList myList={myList} setMyList={setMyList}/>
     </>
   )
 }

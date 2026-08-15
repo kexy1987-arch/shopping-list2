@@ -1,15 +1,14 @@
 import styles from './myList.module.css'
-import type { DbProduct, ListItem, user, Stores } from '../../utils/types'
+import type { DbProduct, ListItem, Stores } from '../../utils/types'
 import { useState, useEffect } from 'react';
 import { titleCase } from '../../utils/functions';
 
 type MyListProps = {
     myList: ListItem[],
     setMyList: (value: ListItem[]) => void,
-    user: user,
 }
 
-export default function MyList({myList, setMyList, user}:MyListProps) {
+export default function MyList({myList, setMyList}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [currentStore, setCurrentStore] = useState<string>("all")
@@ -58,6 +57,7 @@ export default function MyList({myList, setMyList, user}:MyListProps) {
 
     function deleteItem(id: number){
         const updated = myList.filter(item => item.id !== id);
+        console.log(updated)
         setMyList(updated);
     }
 
@@ -79,7 +79,6 @@ export default function MyList({myList, setMyList, user}:MyListProps) {
     }, [])
 
     useEffect(() => {
-        if (!myList) return;
         getMyListItems(myList)
         calcPrice();
     }, [myList, currentStore])
@@ -88,7 +87,7 @@ export default function MyList({myList, setMyList, user}:MyListProps) {
         <div className={styles["my-list"]}>
             <div className={styles.filter}>
                 <label>Filter by store:
-                    <select onChange={(e) => setCurrentStore(e.target.value)}>
+                    <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>
                         <option value="all">All</option>
                         {stores.map(store => (
                             <option key={store.store} value={store.store}>{store.store.toLocaleUpperCase()}</option>

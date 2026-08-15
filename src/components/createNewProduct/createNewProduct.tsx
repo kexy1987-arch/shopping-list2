@@ -74,27 +74,27 @@ export default function CreateNewProduct(){
                 <button type="button" onClick={() => setShowScanner(true)}>Barcode Scanner</button>
                 <div className={styles["input-container"]}>
                     <label htmlFor="name">Product name:</label>
-                    <input type="text" id="name" name="name" onChange={(e) => handleInputs(e)}/>
+                    <input type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="price">Product price:</label>
-                    <input type="text" id="price" name="price" onChange={(e) => handleInputs(e)} />
+                    <input type="text" id="price" name="price" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="category">Product category:</label>
-                    <input type="text" id="category" name="category" onChange={(e) => handleInputs(e)} />
+                    <input type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="description">Product description:</label>
-                    <input type="text" id="description" name="description" onChange={(e) => handleInputs(e)} />
+                    <input type="text" id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="store">Store:</label>
-                    <input type="text" id="store" name="store" onChange={(e) => handleInputs(e)} />
+                    <input type="text" id="store" name="store" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="image">Image:</label>
-                    <input type="file" id="image" name="image" accept="image/*" onChange={(e) => setImage(e.target.files![0])} />
+                    <input type="file" id="image" name="image" autoComplete="off" accept="image/*" onChange={(e) => setImage(e.target.files![0])} />
                 </div>
                 <button onClick={(e) => handleSubmit(e)}>Submit</button>
             </form>

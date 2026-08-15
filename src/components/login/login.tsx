@@ -50,9 +50,9 @@ export default function Login({setToken, setUser}:LoginProps){
                 <fieldset className={styles.login}>
                     <legend>Login</legend>
                     <label htmlFor="email">Email</label>
-                    <input ref={ emailRef } id="email" type="text" required/>
+                    <input ref={ emailRef } id="email" type="text" name="email" autoComplete="email" required/>
                     <label htmlFor="password">Password</label>
-                    <input ref={ passwordRef }id="password" type="password" required />
+                    <input ref={ passwordRef } id="password" type="password" name="password"  autoComplete='current-password' required />
                 </fieldset>
                 <p><Link to="/newaccount">New Account</Link></p>
                 <button onClick={(e) => handleLogin(e)} type="submit">Log in</button>
