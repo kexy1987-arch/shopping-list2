@@ -1,6 +1,7 @@
 import styles from './createNewProduct.module.css'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Scanner from './scanner';
+import type { DbProduct } from '../../utils/types';
 
 
 
@@ -16,6 +17,12 @@ export default function CreateNewProduct(){
     });
     const [image, setImage] = useState<File | null>(null);
     const [barcode, setBarcode] = useState<string | null>("");
+    const nameRef = useRef<HTMLInputElement>(null);
+    const priceRef = useRef<HTMLInputElement>(null);
+    const categoryRef = useRef<HTMLInputElement>(null);
+    const storeRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLInputElement>(null);
+    const [ existingItem, setExistingItem] = useState<boolean>(false);
 
     function handleInputs(e: React.ChangeEvent<HTMLInputElement>){
         setFormData({
@@ -35,7 +42,7 @@ export default function CreateNewProduct(){
         if ( barcode ) data.append("barcode", barcode!);
         if ( image ) data.append("image", image!);
         
-        const req = await fetch(`${API}/new-product`, {
+        const req = await fetch(`${API}/update-product`, {
             method: "POST",
             body: data
         })
@@ -54,13 +61,28 @@ export default function CreateNewProduct(){
 
         const res = await req.json();
 
-        if(res.ok){
-            console.log("barcode");
+        if(res.ok && res.item){
+            setExistingItem(true);
+            const item: DbProduct = res.item;
+            nameRef.current!.value = item.name;
+            priceRef.current!.value = String(item.price);
+            categoryRef.current!.value = item.category;
+            storeRef.current!.value = item.store;
+            descriptionRef.current!.value = item.description;
+            if(item.barcode)setBarcode(item.barcode);
+
+            const newFormData = {
+                name: item.name,
+                price: String(item.price),
+                category: item.category,
+                store: item.store,
+                description: item.description,
+            }
+            setFormData(newFormData);
         }
     }
 
     useEffect(() => {
-        console.log("BARCODE: ", barcode)
         getItemByBarcode(barcode);
     }, [barcode])
 
@@ -74,29 +96,29 @@ export default function CreateNewProduct(){
                 <button type="button" onClick={() => setShowScanner(true)}>Barcode Scanner</button>
                 <div className={styles["input-container"]}>
                     <label htmlFor="name">Product name:</label>
-                    <input type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
+                    <input ref={nameRef} type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="price">Product price:</label>
-                    <input type="text" id="price" name="price" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <input ref={priceRef} type="text" id="price" name="price" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="category">Product category:</label>
-                    <input type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <input ref={categoryRef} type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="description">Product description:</label>
-                    <input type="text" id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <input ref={descriptionRef} type="text" id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="store">Store:</label>
-                    <input type="text" id="store" name="store" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <input ref={storeRef} type="text" id="store" name="store" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="image">Image:</label>
                     <input type="file" id="image" name="image" autoComplete="off" accept="image/*" onChange={(e) => setImage(e.target.files![0])} />
                 </div>
-                <button onClick={(e) => handleSubmit(e)}>Submit</button>
+                <button onClick={(e) => handleSubmit(e)}>{existingItem ? "Update" : "Create"}</button>
             </form>
         </div>
     )

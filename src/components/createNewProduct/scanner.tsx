@@ -1,5 +1,5 @@
 import BarcodeScanner from "react-qr-barcode-scanner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from './createNewProduct.module.css'
 
 type scannerProps = {
@@ -8,6 +8,9 @@ type scannerProps = {
 }
 
 export default function Scanner({ setData, setShowScanner }:scannerProps){
+    useEffect(() => {
+        setData("")
+    }, [])
     const [ check, setCheck ] = useState<string | null>(null);
 
     return(
