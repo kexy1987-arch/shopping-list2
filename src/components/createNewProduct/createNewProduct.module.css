@@ -11,4 +11,5 @@
     background-color: var(--bg);
     width: 100%;
     max-width: 1126px;
+    overflow-y: hidden;
 }
