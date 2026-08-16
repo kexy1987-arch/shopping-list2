@@ -120,6 +120,7 @@ export default function MyList({myList, setMyList}:MyListProps) {
 
     useEffect(() => {
         getStoreList();
+        calcPrice();
     }, [])
 
     useEffect(() => {
