@@ -88,6 +88,7 @@ h2 {
   letter-spacing: -0.24px;
   @media (max-width: 1024px) {
     font-size: 20px;
+    
   }
 }
 p {
@@ -142,14 +143,14 @@ span button{
   order: 1;
   background-color: yellowgreen;
   color: black;
-  height: 12rem;
+  height: 10rem;
   
 }
 
 .notbought{
   order: 0;
   background-color: antiquewhite;
-  height: 12rem;
+  height: 10rem;
   
 }
 

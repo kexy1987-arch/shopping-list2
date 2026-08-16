@@ -1,14 +1,21 @@
-
+.product-info{
+    width: fit-content;
+    margin: auto;
+    color: black;
+}
 
 .product-info-container{
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
 }
 
 .product-name{
     color: black;
     margin: 0;
+    padding: 0;
+    border-bottom: 1px solid;
+    box-shadow: var(--shadow);
 }
 
 .info-lines{
