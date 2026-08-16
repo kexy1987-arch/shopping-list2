@@ -30,6 +30,10 @@
     display: flex;
     align-items: center;
     margin: 1rem;
+    @media (max-width: 380px) {
+            width: 4rem;
+            height: 4rem;    
+        }
 }
 
 .img-container img {

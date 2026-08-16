@@ -137,21 +137,22 @@ span button{
   box-sizing: border-box;
   transition: height 0.2s ease;
   overflow: hidden;
+  height: 10rem;
+  @media (max-width: 380px) {
+      height: 9rem;
+      font-size: 0.6rem
+    }
 }
 
 .bought {
   order: 1;
   background-color: yellowgreen;
-  color: black;
-  height: 10rem;
-  
+  color: black; 
 }
 
 .notbought{
   order: 0;
-  background-color: antiquewhite;
-  height: 10rem;
-  
+  background-color: antiquewhite;  
 }
 
 .hide{
