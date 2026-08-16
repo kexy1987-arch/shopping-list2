@@ -2,8 +2,6 @@ import styles from './myList.module.css'
 import type { DbProduct, ListItem, Stores } from '../../utils/types'
 import { useState, useEffect } from 'react';
 import { titleCase } from '../../utils/functions';
-import { motion } from "framer-motion"
-import { Flipper } from 'react-flip-toolkit';
 
 type MyListProps = {
     myList: ListItem[],
@@ -82,30 +80,37 @@ export default function MyList({myList, setMyList}:MyListProps) {
     }
 
     function buy(e: React.MouseEvent<HTMLDivElement>, item: ListItem) {
-        setMyList(prev => {
-            const updated = prev.map(prevItem =>
-                prevItem.id === item.id
-                    ? { ...prevItem, bought: !prevItem.bought }
-                    : prevItem
-            );
-            return updated.sort((a, b) => Number(a.bought) - Number(b.bought));
-        });
         const el = document.getElementById(`item-${item.id}`)
         if (el) {
             el.classList.add("hide")
+        }
+
+        setTimeout(() => {
+            setMyList(prev => {
+                const updated = prev.map(prevItem =>
+                    prevItem.id === item.id
+                        ? { ...prevItem, bought: !prevItem.bought }
+                        : prevItem
+                );
+                return updated.sort((a, b) => Number(a.bought) - Number(b.bought));
+            });
+        }, 201)        
+        
+        if (el) {
+                       
 
             setTimeout(() => {                
                 el.classList.toggle("notbought");
             }
             
-            , 350)
+            , 202)
             setTimeout(() => {
                 el.classList.toggle("bought")
-            }, 700)
+            }, 203)
             
             setTimeout(() => {   
                 el.classList.remove("hide")
-            }, 1050)
+            }, 304)
         }
         
         

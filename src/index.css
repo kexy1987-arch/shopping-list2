@@ -124,17 +124,17 @@ span button{
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 1rem;
   height: 90%;  
 }
 
 .my-product-card {
   width: 90%;
   max-width: 600px;
+  margin: 0.5rem 0;
   border-radius: 0.5rem;
   padding: 0.5rem;
   box-sizing: border-box;
-  transition: height 0.3s ease;
+  transition: height 0.2s ease;
   overflow: hidden;
 }
 
@@ -156,4 +156,5 @@ span button{
 .hide{
   height: 0px;
   padding: 0px;
+  margin: 0;
 }
