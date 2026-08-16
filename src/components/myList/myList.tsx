@@ -152,9 +152,9 @@ export default function MyList({myList, setMyList}:MyListProps) {
                                     <img src={product.image_url} alt={`Photo of ${product.name}`} />
                                 </div>
                                 <div className={styles["product-info"]}>                                    
-                                    <div className={styles["info-lines"]}><p>Store:</p> {product.store.toLocaleUpperCase()}</div>
-                                    <div className={styles["info-lines"]}><p>Category: </p> {titleCase(product.category)}</div>
-                                    <div className={styles["info-lines"]}><p>Unit Price: </p>€{product.price}</div>                                    
+                                    <div className={styles["info-lines"]}><p>Store:</p> <span>{product.store.toLocaleUpperCase()}</span></div>
+                                    <div className={styles["info-lines"]}><p>Category: </p> <span>{titleCase(product.category)}</span></div>
+                                    <div className={styles["info-lines"]}><p>Unit Price: </p><span>€{product.price}</span></div>                                    
                                     <p>Total price: €{(product.price * item.amount!).toFixed(2)}</p>
                                 </div>
                                 <div>

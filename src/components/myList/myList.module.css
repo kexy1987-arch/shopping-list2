@@ -19,8 +19,13 @@
 }
 
 .info-lines{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content:space-between;
+    border-bottom: 1px solid grey;
+}
+
+.info-lines p, .info-lines span {
+    width: fit-content;
 }
 
 .img-container{

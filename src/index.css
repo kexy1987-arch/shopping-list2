@@ -54,6 +54,7 @@
 #root {
   width: 1126px;
   max-width: 100%;
+  min-width: 350px;
   margin: 0 auto;
   text-align: center;
   border-inline: 1px solid var(--border);
@@ -99,6 +100,8 @@ p {
 
 button{
   margin: 1rem 1rem;
+  border-radius: 10px;
+  border: none;
 }
 
 .header {
@@ -131,6 +134,7 @@ span button{
 .my-product-card {
   width: 90%;
   max-width: 600px;
+  min-width: 320px;
   margin: 0.5rem 0;
   border-radius: 0.5rem;
   padding: 0.5rem;
