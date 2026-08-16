@@ -79,7 +79,7 @@ export default function MyList({myList, setMyList}:MyListProps) {
         setPrice(price)
     }
 
-    function buy(e: React.MouseEvent<HTMLDivElement>, item: ListItem) {
+    function buy(item: ListItem) {
         const el = document.getElementById(`item-${item.id}`)
         if (el) {
             el.classList.add("hide")
@@ -146,7 +146,7 @@ export default function MyList({myList, setMyList}:MyListProps) {
                     const product = myListItems.find(p => p.id === item.id)
                     if (!product) return null;
                     return (
-                        <div key={item.id} id={`item-${item.id}`} className="my-product-card notbought" onClick={(e) => buy(e, item!)}>
+                        <div key={item.id} id={`item-${item.id}`} className="my-product-card notbought" onClick={() => buy(item!)}>
                             <div className={styles["product-info-container"]}>
                                 <div className={styles["img-container"]}>
                                     <img src={product.image_url} alt={`Photo of ${product.name}`} />
