@@ -138,7 +138,7 @@ span button{
   transition: height 0.2s ease;
   overflow: hidden;
   height: 10rem;
-  @media (max-width: 380px) {
+  @media (max-width: 440px) {
       height: 9rem;
       font-size: 0.6rem
     }
