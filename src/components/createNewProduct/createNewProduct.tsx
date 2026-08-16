@@ -2,6 +2,7 @@ import styles from './createNewProduct.module.css'
 import { useEffect, useState, useRef } from "react"
 import Scanner from './scanner';
 import type { DbProduct } from '../../utils/types';
+import ScannerRes from '../ScannerResults/scannerRes';
 
 
 
@@ -21,10 +22,12 @@ export default function CreateNewProduct(){
     const priceRef = useRef<HTMLInputElement>(null);
     const categoryRef = useRef<HTMLInputElement>(null);
     const storeRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLInputElement>(null);
-    const [ existingItem, setExistingItem] = useState<boolean>(false);
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
+    const [ showExistingItems, setShowExistingItems] = useState<boolean>(false);
+    const [ existingList, setExistingList] = useState<DbProduct[]>([]);
+    const [ selectedItem, setSelectedItem] = useState<DbProduct | null>(null);
 
-    function handleInputs(e: React.ChangeEvent<HTMLInputElement>){
+    function handleInputs(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>){
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
@@ -61,24 +64,11 @@ export default function CreateNewProduct(){
 
         const res = await req.json();
 
-        if(res.ok && res.item){
-            setExistingItem(true);
-            const item: DbProduct = res.item;
-            nameRef.current!.value = item.name;
-            priceRef.current!.value = String(item.price);
-            categoryRef.current!.value = item.category;
-            storeRef.current!.value = item.store;
-            descriptionRef.current!.value = item.description;
-            if(item.barcode)setBarcode(item.barcode);
-
-            const newFormData = {
-                name: item.name,
-                price: String(item.price),
-                category: item.category,
-                store: item.store,
-                description: item.description,
-            }
-            setFormData(newFormData);
+        if(res.ok && res.items){
+            setShowExistingItems(true);
+            const items: DbProduct[] = res.items;
+            setExistingList(items);
+            
         }
     }
 
@@ -86,14 +76,36 @@ export default function CreateNewProduct(){
         getItemByBarcode(barcode);
     }, [barcode])
 
+    useEffect(() => {
+        if(!selectedItem)return;
+        nameRef.current!.value = selectedItem.name;
+        priceRef.current!.value = String(selectedItem.price);
+        categoryRef.current!.value = selectedItem.category;
+        storeRef.current!.value = selectedItem.store;
+        descriptionRef.current!.value = selectedItem.description;
+        if (selectedItem.barcode) setBarcode(selectedItem.barcode);
+
+        const newFormData = {
+            id: selectedItem.id,
+            name: selectedItem.name,
+            price: String(selectedItem.price),
+            category: selectedItem.category,
+            store: selectedItem.store,
+            description: selectedItem.description,
+        }
+        setFormData(newFormData);
+    }, [selectedItem])
+
     return(
         <div className='z-index'>
             <header className="header">
                 <h2>Create / Update product</h2>
             </header>
+            {showExistingItems && <ScannerRes items={existingList} setSelectedItem={setSelectedItem} setShow={setShowExistingItems}/>}
             {showScanner && <Scanner setData={setBarcode} setShowScanner={setShowScanner}/>}
             <form>
                 <button type="button" onClick={() => setShowScanner(true)}>Barcode Scanner</button>
+                <p>Barcode: {barcode}</p>
                 <div className={styles["input-container"]}>
                     <label htmlFor="name">Product name:</label>
                     <input ref={nameRef} type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
@@ -108,7 +120,7 @@ export default function CreateNewProduct(){
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="description">Product description:</label>
-                    <input ref={descriptionRef} type="text" id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <textarea ref={descriptionRef} rows={5} id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="store">Store:</label>
@@ -118,8 +130,13 @@ export default function CreateNewProduct(){
                     <label htmlFor="image">Image:</label>
                     <input type="file" id="image" name="image" autoComplete="off" accept="image/*" onChange={(e) => setImage(e.target.files![0])} />
                 </div>
-                <button onClick={(e) => handleSubmit(e)}>{existingItem ? "Update" : "Create"}</button>
+                <button onClick={(e) => handleSubmit(e)}>Create New</button>
             </form>
         </div>
     )
 }
+
+/*
+
+
+            */

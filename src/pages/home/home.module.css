@@ -34,7 +34,7 @@
 }
 
 .new-product-btn:hover::after{
-    content: "Create New Product";
+    content: "Create / Update Product";
 }
 
 .global-list-btn {

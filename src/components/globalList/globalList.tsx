@@ -2,19 +2,20 @@ import { useEffect, useState } from 'react'
 import type { product } from '../../utils/types';
 import styles from './globalList.module.css'
 import { titleCase } from '../../utils/functions';
-import type { ListItem } from '../../utils/types';
+import type { ListItem, DbProduct } from '../../utils/types';
 import Scanner from '../createNewProduct/scanner';
 import ItemFound from './itemFound';
 
 type GlobalListProps = {
     myList: ListItem[],
     setMyList: ( value: ListItem[] | ( (prev: ListItem[]) => ListItem[]) ) => void,
+    setFavorites: React.Dispatch<React.SetStateAction<DbProduct[]>>
 }
 
-export default function GlobalList({myList, setMyList}:GlobalListProps){
+export default function GlobalList({myList, setMyList, setFavorites}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [list, setList] = useState<product[] | null>(null);
-    const [itemFound, setItemFound] = useState<product | null>(null);
+    const [itemFound, setItemFound] = useState<product[] | null>(null);
     const [showScanner, setShowScanner] = useState<boolean>(false);
     const [barcode, setBarcode] = useState<string | null>("");
     const [itemDescription, setItemDescription] = useState<product | null>(null);
@@ -25,13 +26,14 @@ export default function GlobalList({myList, setMyList}:GlobalListProps){
         const data = await res.json()
 
         if ( data.ok ) {
-            setList(data.list.results)
+            setList(data.list)
+            console.log(data)
         }
 
     }
 
     function findByBarcode(barcode: string){
-        const product = list?.find(product => product.barcode === barcode)
+        const product = list?.filter(product => product.barcode === barcode)
         if(!product) return;
         setItemFound(product);
     }
@@ -65,7 +67,7 @@ export default function GlobalList({myList, setMyList}:GlobalListProps){
             <div>
                 <button onClick={() => setShowScanner(true)}>Find by Barcode</button>
             </div>
-            {itemFound && <ItemFound product={itemFound} addToMyList={addToMyList} setItemFound={setItemFound}/>}
+            {itemFound && <ItemFound products={itemFound} addToMyList={addToMyList} setItemFound={setItemFound}/>}
             {showScanner && <Scanner setData={setBarcode} setShowScanner={setShowScanner}/>}
             {list ? list.map(product => (
                 <div key={product.id} className={styles["product-card"]} onClick={() => {setItemDescription(product); console.log(product)}}>                        
@@ -80,6 +82,7 @@ export default function GlobalList({myList, setMyList}:GlobalListProps){
                     </div>
                     <div>
                         <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
+                        <button onClick={() => setFavorites(prev => [...prev, product])}>Add to Favorites</button>
                     </div>
                 </div>
             ))
