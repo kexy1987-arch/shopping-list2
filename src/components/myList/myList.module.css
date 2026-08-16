@@ -1,11 +1,4 @@
-.my-product-card{
-    width: 90%;
-    height: fit-content;
-    margin: 0.5rem auto;
-    background-color: antiquewhite;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-}
+
 
 .product-info-container{
     display: grid;

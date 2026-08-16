@@ -23,9 +23,8 @@ function Home({user}:HomeProps) {
     const res = await req.json();
 
     if(res.ok){
-      
+      console.log("MYLIST")
       const list = JSON.parse(res.data.list)
-    //  list.sort((a: ListItem, b: ListItem) => Number(a.bought) - Number(b.bought));
       setMyList(list);
       return;
     }
@@ -77,7 +76,7 @@ function Home({user}:HomeProps) {
       {activePanel === "create" && <CreateNewProduct />}
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>
       {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList}/>}
-      <MyList myList={myList} setMyList={setMyList}/>
+      <MyList myList={myList} setMyList={setMyList} />
     </>
   )
 }

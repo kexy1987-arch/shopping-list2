@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "framer-motion": "^13.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-flip-toolkit": "^7.2.4",
     "react-qr-barcode-scanner": "^2.1.28",
     "react-router-dom": "^7.18.2"
   },

@@ -2,6 +2,8 @@ import styles from './myList.module.css'
 import type { DbProduct, ListItem, Stores } from '../../utils/types'
 import { useState, useEffect } from 'react';
 import { titleCase } from '../../utils/functions';
+import { motion } from "framer-motion"
+import { Flipper } from 'react-flip-toolkit';
 
 type MyListProps = {
     myList: ListItem[],
@@ -16,7 +18,7 @@ export default function MyList({myList, setMyList}:MyListProps) {
     const [price, setPrice] = useState<number>(0);
 
 
-    async function getMyListItems(myList: ListItem[]) {        
+    async function getMyListItems(myList: ListItem[]) {
         const idList = myList.map(item => item.id)
         const req = await fetch(`${API}/get-my-list-items`, {
             method: "POST",
@@ -46,19 +48,22 @@ export default function MyList({myList, setMyList}:MyListProps) {
         setStores(res.stores)
     }
 
-    function increaseAmount( itemRef: ListItem ){
+    function increaseAmount( e: React.MouseEvent<HTMLButtonElement>, itemRef: ListItem ){
+        e.stopPropagation();
         if( !itemRef )return;
         const updated = myList.map(item => item.id === itemRef.id ? {...item, amount: item.amount + 1} : item)
         setMyList(updated)
     }
 
-    function decreseAmount( itemRef: ListItem ){
+    function decreseAmount(e: React.MouseEvent<HTMLButtonElement>, itemRef: ListItem ){
+        e.stopPropagation()
         if (!itemRef || itemRef.amount === 0) return;
         const updated = myList.map(item => item.id === itemRef.id ? { ...item, amount: item.amount - 1 } : item)
         setMyList(updated)
     }
 
-    function deleteItem(id: number){
+    function deleteItem(e: React.MouseEvent<HTMLButtonElement>, id: number){
+        e.stopPropagation();
         const updated = myList.filter(item => item.id !== id);
         setMyList(updated);
     }
@@ -76,15 +81,36 @@ export default function MyList({myList, setMyList}:MyListProps) {
         setPrice(price)
     }
 
-    function buy(item: ListItem) {
-        setMyList((prev) =>
-            prev.map((prevItem) =>
+    function buy(e: React.MouseEvent<HTMLDivElement>, item: ListItem) {
+        setMyList(prev => {
+            const updated = prev.map(prevItem =>
                 prevItem.id === item.id
                     ? { ...prevItem, bought: !prevItem.bought }
                     : prevItem
-            )
-        );
+            );
+            return updated.sort((a, b) => Number(a.bought) - Number(b.bought));
+        });
+        const el = document.getElementById(`item-${item.id}`)
+        if (el) {
+            el.classList.add("hide")
+
+            setTimeout(() => {                
+                el.classList.toggle("notbought");
+            }
+            
+            , 350)
+            setTimeout(() => {
+                el.classList.toggle("bought")
+            }, 700)
+            
+            setTimeout(() => {   
+                el.classList.remove("hide")
+            }, 1050)
+        }
+        
+        
     }
+
 
 
     useEffect(() => {
@@ -97,7 +123,7 @@ export default function MyList({myList, setMyList}:MyListProps) {
     }, [myList, currentStore])
     
     return(
-        <div className={styles["my-list"]}>
+        <div>
             <div className={styles.filter}>
                 <label>Filter by store:
                     <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>
@@ -107,32 +133,34 @@ export default function MyList({myList, setMyList}:MyListProps) {
                         ))}
                     </select>
                 </label>
-                <p>Total: €{price}</p>
+                <p>Total: €{price.toFixed(2)}</p>
             </div>
-            {myListItems.map(( item, i ) => {
-                const itemRef: ListItem | undefined = myList.find(itemRef => item.id === itemRef.id);
-                const amount = itemRef?.amount;
-                return(
-                    <div key={item.id + i} className={styles["my-product-card"]} onClick={() => buy(itemRef!)}>                      
-                        <div className={styles["product-info-container"]}>
-                            <div className={styles["img-container"]}>
-                                <img src={item.image_url} alt={`Photo of ${item.name}`} />
-                            </div>
-                            <div className={styles["product-info"]}>
-                                <h2 className={styles["product-name"]}>{titleCase(item.name)}</h2>
-                                <div className={styles["info-lines"]}><p>Store:</p> {item.store.toLocaleUpperCase()}</div>
-                                <div className={styles["info-lines"]}><p>Category: </p> {titleCase(item.category)}</div>
-                                <div className={styles["info-lines"]}><p>Price: </p>€{item.price}</div>
-                                <div>Amount: <br></br>{itemRef && <span><button onClick={() => increaseAmount(itemRef)}>+</button>{amount} pcs<button onClick={(() => decreseAmount(itemRef))}>-</button></span>}</div>
-                                <p>Price: €{(item.price * amount!).toFixed(2)}</p>
-                            </div>
-                            <div>
-                                {itemRef && <button onClick={() => deleteItem(itemRef.id)}>Remove</button>}
+            <div className="list-container">
+                {myListItems && myList.map((item) => {
+                    const product = myListItems.find(p => p.id === item.id)
+                    if (!product) return null;
+                    return (
+                        <div key={item.id} id={`item-${item.id}`} className="my-product-card notbought" onClick={(e) => buy(e, item!)}>
+                            <div className={styles["product-info-container"]}>
+                                <div className={styles["img-container"]}>
+                                    <img src={product.image_url} alt={`Photo of ${product.name}`} />
+                                </div>
+                                <div className={styles["product-info"]}>
+                                    <h2 className={styles["product-name"]}>{titleCase(product.name)}</h2>
+                                    <div className={styles["info-lines"]}><p>Store:</p> {product.store.toLocaleUpperCase()}</div>
+                                    <div className={styles["info-lines"]}><p>Category: </p> {titleCase(product.category)}</div>
+                                    <div className={styles["info-lines"]}><p>Price: </p>€{product.price}</div>
+                                    <div>Amount: <br></br>{item && <span><button onClick={(e) => increaseAmount(e, item)}>+</button>{item.amount} pcs<button onClick={((e) => decreseAmount(e, item))}>-</button></span>}</div>
+                                    <p>Price: €{(product.price * item.amount!).toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    {item && <button onClick={(e) => deleteItem(e, item.id)}>Remove</button>}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            )}
+                    )
+                })}
+            </div>                       
         </div>
     )
 }
