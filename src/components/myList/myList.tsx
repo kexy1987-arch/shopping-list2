@@ -124,8 +124,11 @@ export default function MyList({myList, setMyList}:MyListProps) {
 
     useEffect(() => {
         getMyListItems(myList)
-        calcPrice();
     }, [myList, currentStore])
+
+    useEffect(() => {
+        calcPrice()
+    }, [myListItems])
     
     return(
         <div>
