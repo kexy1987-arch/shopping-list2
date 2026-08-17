@@ -135,6 +135,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
     
     return(
         <div>
+            <img src="/FavoriteFilled.svg"/>
             <div className={styles.filter}>
                 <label>Filter by store:
                     <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>

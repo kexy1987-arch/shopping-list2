@@ -105,7 +105,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                     </div>
                     <div>
                         <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
-                        {!favs?.find(fav => fav.id === product.id) ? <button onClick={(e) => addToFavorites(e, product.id)}>fav+</button> : <button onClick={(e) => delFavorite(e , product.id)}>fav-</button>}
+                        {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, product.id)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product.id)}><img src="/FavoriteFilled.svg" /></button>}
                     </div>
                 </div>
             ))

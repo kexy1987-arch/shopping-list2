@@ -164,3 +164,16 @@ span button{
   padding: 0px;
   margin: 0;
 }
+
+.fav-btn{
+  width: fit-content;
+  height: fit-content;
+  background-color: transparent;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.fav-btn img{
+  width: 3rem;
+}
