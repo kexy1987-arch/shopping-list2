@@ -29,6 +29,23 @@ function Home({user}:HomeProps) {
     }
   }
 
+  async function delFav(userId: number, productId: number) {
+    const req = await fetch(`${API}/removeFavorite`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId,
+        productId
+      })
+    })
+
+    const res = await req.json();
+
+    if(res.ok){
+      console.log(res.message);
+      getFavs(userId);
+    }
+  }
+
   async function getMyList(){
     const req = await fetch(`${API}/my-list`, {
       method: "POST",
@@ -49,14 +66,14 @@ function Home({user}:HomeProps) {
     }
   }
 
-  async function updateList() {
+  async function updateList(userId: number, myList: ListItem[]) {
     if(!Array.isArray(myList)) return;
     try{
       const req = await fetch(`${API}/update-list`, {
         method: "POST",
         body: JSON.stringify({
           list: myList,
-          user_id: user.id
+          user_id: userId
         })
       })
 
@@ -77,8 +94,6 @@ function Home({user}:HomeProps) {
     }
   }
 
-  useEffect(() => { updateList() }, [myList])
-
   useEffect(() => { getMyList();}, [])
 
 
@@ -88,8 +103,8 @@ function Home({user}:HomeProps) {
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("create")}>{activePanel === "create" ? "X": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>
-      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} userId={user.id} getFavs={getFavs} favs={favs}/>}
-      <MyList myList={myList} setMyList={setMyList}  />
+      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav}/>}
+      <MyList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />
     </>
   )
 }

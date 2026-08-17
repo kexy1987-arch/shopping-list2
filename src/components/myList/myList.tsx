@@ -6,9 +6,11 @@ import { titleCase } from '../../utils/functions';
 type MyListProps = {
     myList: ListItem[],
     setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
+    updateList: (userId: number, myList: ListItem[]) => void,
+    userId: number
 }
 
-export default function MyList({ myList, setMyList}:MyListProps) {
+export default function MyList({ myList, setMyList, updateList, userId}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [currentStore, setCurrentStore] = useState<string>("all")
@@ -64,6 +66,7 @@ export default function MyList({ myList, setMyList}:MyListProps) {
         e.stopPropagation();
         const updated = myList.filter(item => item.id !== id);
         setMyList(updated);
+        updateList(userId, updated);
     }
 
     function calcPrice(){

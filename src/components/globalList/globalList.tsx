@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
 import styles from './globalList.module.css'
-import { titleCase } from '../../utils/functions';
+import { titleCase, creatList } from '../../utils/functions';
 import type { DbProduct, ListItem, product} from '../../utils/types';
 import Scanner from '../createNewProduct/scanner';
 import ItemFound from './itemFound';
 
 type GlobalListProps = {
     myList: ListItem[],
-    setMyList: ( value: ListItem[] | ( (prev: ListItem[]) => ListItem[]) ) => void,
+    setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
     userId: number,
     getFavs: (value: number) => void;
     favs: DbProduct[] | null;
+    delFav: (userId: number, productId: number) => void;
+    updateList: (userId: number, myList: ListItem[]) => void
 }
 
-export default function GlobalList({myList, setMyList, userId, getFavs, favs}:GlobalListProps){
+export default function GlobalList({myList, setMyList, updateList, userId, getFavs, favs, delFav}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [list, setList] = useState<product[] | null>(null);
     const [itemFound, setItemFound] = useState<product[] | null>(null);
@@ -50,16 +52,9 @@ export default function GlobalList({myList, setMyList, userId, getFavs, favs}:Gl
     }, [])
 
     function addToMyList(e: React.MouseEvent<HTMLButtonElement>, productId: number){
-        e.stopPropagation();
-        setMyList(prev => {
-            const exist = myList.find(item => item.id === productId);
-
-            if(exist) {
-                return prev.map(item => item.id === productId ? {...item, amount: item.amount + 1 } : item)
-            }
-
-            return [...prev, {id: productId, amount: 1, bought: false}]
-        })
+        e.stopPropagation();        
+        setMyList(prev => creatList(prev, myList, productId));
+        updateList(userId, creatList(myList, myList, productId));
     }
 
     async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, productId: number) {
@@ -80,6 +75,11 @@ export default function GlobalList({myList, setMyList, userId, getFavs, favs}:Gl
         } else {
             console.log(res.error)
         }
+    }
+
+    function delFavorite (e: React.MouseEvent<HTMLButtonElement>, productId: number) {
+        e.stopPropagation();
+        delFav(userId, productId);
     }
 
     return(
@@ -105,7 +105,7 @@ export default function GlobalList({myList, setMyList, userId, getFavs, favs}:Gl
                     </div>
                     <div>
                         <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
-                        {!favs?.find(fav => fav.id === product.id) ? <button onClick={(e) => addToFavorites(e, product.id)}>fav+</button> : <button>fav-</button>}
+                        {!favs?.find(fav => fav.id === product.id) ? <button onClick={(e) => addToFavorites(e, product.id)}>fav+</button> : <button onClick={(e) => delFavorite(e , product.id)}>fav-</button>}
                     </div>
                 </div>
             ))
