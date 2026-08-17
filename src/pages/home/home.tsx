@@ -13,7 +13,21 @@ function Home({user}:HomeProps) {
   const API = import.meta.env.VITE_WORKER_API;
   const [ activePanel, setActivePanel ] = useState<string | null>(null)
   const [myList, setMyList] = useState<ListItem[]>([]);
-  const [favorites, setFavorites] = useState<DbProduct[]>([]);
+  const [favs, setFavs] = useState<DbProduct[] | null>(null);
+
+  async function getFavs(userId: number) {
+    const req = await fetch(`${API}/getFavoriteProducts`, {
+      method: "POST",
+      body: JSON.stringify(userId)
+    })
+
+    const res = await req.json();
+
+    if(res.ok){
+      const { results } = res;
+      setFavs(results);
+    }
+  }
 
   async function getMyList(){
     const req = await fetch(`${API}/my-list`, {
@@ -26,6 +40,7 @@ function Home({user}:HomeProps) {
     if(res.ok){
       console.log("MYLIST")
       const list = JSON.parse(res.data.list)
+      if(!list)return
       setMyList(list);
       return;
     }
@@ -52,11 +67,7 @@ function Home({user}:HomeProps) {
     } catch (error){
       console.log("UPDATE_LIST", error)
     }  
-  }
-
-  useEffect(() => { 
-    updateList()
-  }, [ myList ])
+  }  
 
   function handlePanelToggle(panelName: string){
     if ( activePanel === panelName ) {
@@ -66,9 +77,10 @@ function Home({user}:HomeProps) {
     }
   }
 
-  useEffect(() => {
-    getMyList()
-  }, [])
+  useEffect(() => { updateList() }, [myList])
+
+  useEffect(() => { getMyList();}, [])
+
 
   return (
     <>
@@ -76,8 +88,8 @@ function Home({user}:HomeProps) {
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("create")}>{activePanel === "create" ? "X": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>
-      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} setFavorites={setFavorites} />}
-      <MyList myList={myList} setMyList={setMyList} setFavorites={setFavorites} />
+      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} userId={user.id} getFavs={getFavs} favs={favs}/>}
+      <MyList myList={myList} setMyList={setMyList}  />
     </>
   )
 }

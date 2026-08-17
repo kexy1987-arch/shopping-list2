@@ -1,24 +1,27 @@
 import { useEffect, useState } from 'react'
-import type { product } from '../../utils/types';
 import styles from './globalList.module.css'
 import { titleCase } from '../../utils/functions';
-import type { ListItem, DbProduct } from '../../utils/types';
+import type { DbProduct, ListItem, product} from '../../utils/types';
 import Scanner from '../createNewProduct/scanner';
 import ItemFound from './itemFound';
 
 type GlobalListProps = {
     myList: ListItem[],
     setMyList: ( value: ListItem[] | ( (prev: ListItem[]) => ListItem[]) ) => void,
-    setFavorites: React.Dispatch<React.SetStateAction<DbProduct[]>>
+    userId: number,
+    getFavs: (value: number) => void;
+    favs: DbProduct[] | null;
 }
 
-export default function GlobalList({myList, setMyList, setFavorites}:GlobalListProps){
+export default function GlobalList({myList, setMyList, userId, getFavs, favs}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [list, setList] = useState<product[] | null>(null);
     const [itemFound, setItemFound] = useState<product[] | null>(null);
     const [showScanner, setShowScanner] = useState<boolean>(false);
     const [barcode, setBarcode] = useState<string | null>("");
     const [itemDescription, setItemDescription] = useState<product | null>(null);
+
+    console.log(favs)
 
 
     async function getProducts() {
@@ -27,7 +30,6 @@ export default function GlobalList({myList, setMyList, setFavorites}:GlobalListP
 
         if ( data.ok ) {
             setList(data.list)
-            console.log(data)
         }
 
     }
@@ -43,7 +45,8 @@ export default function GlobalList({myList, setMyList, setFavorites}:GlobalListP
     }, [barcode])
 
     useEffect(() => {
-        getProducts()        
+        getProducts();
+        getFavs(userId);       
     }, [])
 
     function addToMyList(e: React.MouseEvent<HTMLButtonElement>, productId: number){
@@ -57,6 +60,26 @@ export default function GlobalList({myList, setMyList, setFavorites}:GlobalListP
 
             return [...prev, {id: productId, amount: 1, bought: false}]
         })
+    }
+
+    async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, productId: number) {
+        e.stopPropagation();
+        const req = await fetch(`${API}/addToFavorites`, {
+            method: "POST",
+            body: JSON.stringify({
+                userId: userId,
+                productId: productId
+            })
+        })
+
+        const res = await req.json();
+
+        if (res.ok) {
+            console.log(res.message)
+            getFavs(userId)
+        } else {
+            console.log(res.error)
+        }
     }
 
     return(
@@ -82,7 +105,7 @@ export default function GlobalList({myList, setMyList, setFavorites}:GlobalListP
                     </div>
                     <div>
                         <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
-                        <button onClick={() => setFavorites(prev => [...prev, product])}>Add to Favorites</button>
+                        {!favs?.find(fav => fav.id === product.id) ? <button onClick={(e) => addToFavorites(e, product.id)}>fav+</button> : <button>fav-</button>}
                     </div>
                 </div>
             ))

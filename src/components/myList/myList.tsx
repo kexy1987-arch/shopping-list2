@@ -6,10 +6,9 @@ import { titleCase } from '../../utils/functions';
 type MyListProps = {
     myList: ListItem[],
     setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
-    setFavorites: React.Dispatch<React.SetStateAction<DbProduct[]>>
 }
 
-export default function MyList({ myList, setMyList, setFavorites }:MyListProps) {
+export default function MyList({ myList, setMyList}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [currentStore, setCurrentStore] = useState<string>("all")
