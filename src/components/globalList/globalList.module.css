@@ -57,3 +57,21 @@
     box-shadow: var(--shadow);
     margin: 2rem auto;
 }
+
+.search{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 25rem;
+    margin: auto;
+}
+
+.found{
+    background-color: antiquewhite;
+    width: 24rem;
+    max-height: 34rem;
+    overflow-y: scroll;
+    position: absolute;
+    box-shadow: var(--shadow);
+}

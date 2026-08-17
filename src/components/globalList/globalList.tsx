@@ -22,9 +22,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
     const [showScanner, setShowScanner] = useState<boolean>(false);
     const [barcode, setBarcode] = useState<string | null>("");
     const [itemDescription, setItemDescription] = useState<product | null>(null);
-
-    console.log(favs)
-
+    const [find, setFind] = useState<product[] | undefined>(undefined);
 
     async function getProducts() {
         const res = await fetch(`${API}/get-products`)
@@ -82,12 +80,47 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
         delFav(userId, productId);
     }
 
+    function search(e: React.ChangeEvent<HTMLInputElement>, list: product[]){
+        if(e.target.value === ""){
+            setFind(undefined);
+            return;
+        }
+        const toFind = e.target.value.toLowerCase();
+        const filter = list?.filter(product => product.name.includes(toFind))
+        setFind(filter)
+    }
+
     return(
         <div className='z-index'>
             <header className="header">
                 <h2 className='fixed'>Global Product List</h2>
             </header>
-            <div>
+            
+            <div className={styles.search}>
+                <div>
+                    <input placeholder='Find item' type="text" onChange={(e) => search(e, list!)} />
+                    <div className={styles.found}>
+                        {find ? find.map(product => (
+                        <div key={product.id} className={styles["product-card"]} onClick={() => { setItemDescription(product); console.log(product) }}>
+                            <div className={styles["card-img-container"]}>
+                                <img className={styles["card-img"]} src={product.image_url} alt={`Photo of ${product.name}`} />
+                            </div>
+                            <div>
+                                <h3>{titleCase(product.name)}</h3>
+                                <p>{titleCase(product.store)}</p>
+                                <p>Price: €{product.price}</p>
+                                <p>Category: {titleCase(product.category)}</p>
+                            </div>
+                            <div>
+                                <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
+                                {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, product.id)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product.id)}><img src="/FavoriteFilled.svg" /></button>}
+                            </div>
+                        </div>
+                        ))
+                        : ""
+                        }
+                    </div>
+                </div>                
                 <button onClick={() => setShowScanner(true)}>Find by Barcode</button>
             </div>
             {itemFound && <ItemFound products={itemFound} addToMyList={addToMyList} setItemFound={setItemFound}/>}
