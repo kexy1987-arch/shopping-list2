@@ -98,7 +98,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
             
             <div className={styles.search}>
                 <div>
-                    <input placeholder='Find item' type="text" onChange={(e) => search(e, list!)} />
+                    <input placeholder='Find by name' type="text" onChange={(e) => search(e, list!)} />
                     <div className={styles.found}>
                         {find ? find.map(product => (
                         <div key={product.id} className={styles["product-card"]} onClick={() => { setItemDescription(product); console.log(product) }}>

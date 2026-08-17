@@ -51,10 +51,10 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
             </header>
             <div className={styles.search}>
                 <div>
-                    <input placeholder='Find item' type="text" onChange={(e) => search(e, favs!)} />
+                    <input placeholder='Find by name' type="text" onChange={(e) => search(e, favs!)} />
                     <div className={styles.found}>
                         {find ? find.map(product => (
-                            <div key={product.id} className={styles["product-card"]} onClick={() => { setItemDescription(product); console.log(product) }}>
+                            <div key={product.id} className={styles["product-card"]}>
                                 <div className={styles["card-img-container"]}>
                                     <img className={styles["card-img"]} src={product.image_url} alt={`Photo of ${product.name}`} />
                                 </div>
