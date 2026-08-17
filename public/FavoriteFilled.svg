@@ -2,5 +2,8 @@
   <path 
     d="M12 2L15 9H22L17 14L19 21L12 17L5 21L7 14L2 9H9L12 2Z"
     fill="#0051FF"
+    stroke="#0051FF"
+    stroke-width="2"
+    stroke-linejoin="round"
   />
 </svg>

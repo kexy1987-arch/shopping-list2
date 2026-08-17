@@ -9,10 +9,12 @@
     justify-content: center;
     align-items: center;
     z-index: 999;
+    transition: transform 0.3s ease;
 }
 
 .btn:hover{
     box-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
+    transform: scale(1.2);
 }
 
 .btn:hover::after{
@@ -33,14 +35,11 @@
     top: 1rem;
 }
 
-.new-product-btn:hover::after{
-    content: "Create / Update Product";
-}
-
 .global-list-btn {
     top: 4rem;    
 }
 
-.global-list-btn:hover::after {
-    content: "Open Global List"
+.favorites-btn {
+    top: 7rem;
 }
+

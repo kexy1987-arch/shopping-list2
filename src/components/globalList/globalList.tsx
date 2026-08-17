@@ -85,7 +85,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
     return(
         <div className='z-index'>
             <header className="header">
-                <h2>Global Product List</h2>
+                <h2 className='fixed'>Global Product List</h2>
             </header>
             <div>
                 <button onClick={() => setShowScanner(true)}>Find by Barcode</button>

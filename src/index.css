@@ -108,6 +108,7 @@ button{
   display: flex;
   justify-content: space-between;
   width: 90%;
+  height: 3rem;
   margin: 1rem auto;
 }
 
@@ -120,8 +121,19 @@ span button{
   z-index: 99;
   background-color: #08060dd3;
   width: 100%;
+  height: 100svh;
   max-width: 1124px;
 }
+
+.fixed{
+  position: fixed;
+  top: -1.1rem;
+  left: 0px;
+  border-bottom-right-radius: 1rem;
+  background-color: #08060dd3;
+  padding: 0.4rem 1rem;
+}
+
 
 .list-container {
   display: flex;

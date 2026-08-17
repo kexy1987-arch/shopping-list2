@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import CreateNewProduct from '../../components/createNewProduct/createNewProduct';
 import GlobalList from '../../components/globalList/globalList';
 import MyList from '../../components/myList/myList';
+import Favorites from '../../components/favorites/favorites';
 import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
 
@@ -100,10 +101,16 @@ function Home({user}:HomeProps) {
   return (
     <>
       <h1>Shopping List</h1>
+      
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("create")}>{activePanel === "create" ? "X": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
+
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>
       {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav}/>}
+      
+      <button className={`${styles["favorites-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("favorites")}>{activePanel === "favorites" ? "X" : <img src="/FavoriteFilled.svg" />}</button>
+      {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs}/>}
+      
       <MyList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />
     </>
   )
