@@ -87,12 +87,20 @@ function Home({user}:HomeProps) {
     }  
   }  
 
-  function handlePanelToggle(panelName: string){
+  function handlePanelToggle(e: React.MouseEvent<HTMLButtonElement>, panelName: string){
     if ( activePanel === panelName ) {
       setActivePanel(null);
     } else {
       setActivePanel(panelName)
     }
+    const btns = document.querySelectorAll(`.${styles.btn}`)
+    btns.forEach(btn => {
+      btn.classList.remove(styles.selected)
+    })
+
+    if(activePanel === panelName) return;
+    const selected = e.currentTarget;
+    selected.classList.add(`${styles.selected}`)
   }
 
   useEffect(() => { getMyList();}, [])
@@ -102,16 +110,16 @@ function Home({user}:HomeProps) {
     <>
       <h1>Shopping List</h1>
       
-      <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("create")}>{activePanel === "create" ? "X": "+"}</button>
+      <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "create")}>{activePanel === "create" ? "x": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
 
-      <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("global-list")}>{activePanel === "global-list" ? "X" : <img src="/Internet.svg"/>}</button>
+      <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "global-list")}>{activePanel === "global-list" ? "x" : <img src="/Internet.svg"/>}</button>
       {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav}/>}
       
-      <button className={`${styles["favorites-btn"]} ${styles.btn}`} onClick={() => handlePanelToggle("favorites")}>{activePanel === "favorites" ? "X" : <img src="/FavoriteFilled.svg" />}</button>
+      <button className={`${styles["favorites-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "favorites")}>{activePanel === "favorites" ? "x" : <img src="/FavoriteFilled.svg" />}</button>
       {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs}/>}
       
-      <MyList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />
+      {!activePanel && <MyList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
     </>
   )
 }
