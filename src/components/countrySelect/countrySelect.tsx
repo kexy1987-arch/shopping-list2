@@ -19,18 +19,22 @@ export default function CountrySelect({setCountry}: CountrySelectProps){
     }
 
     function handleEnter(e: React.KeyboardEvent<HTMLInputElement>) {
-        const input = titleCase(e.currentTarget.value)
+        const input = titleCase(e.currentTarget.value) || ""
         const userCountry = countries.filter(c => c.includes(input!));
 
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && input) {
             setCountry(userCountry[0]);
             setResults(null)
             countryRef.current!.placeholder = userCountry[0];
             countryRef.current!.value = ""
+            e.currentTarget.style.borderColor = "yellowgreen";
+            return;
         }
+        countryRef.current!.placeholder = "";
+        e.currentTarget.style.borderColor = "red";
     }
 
-    function handleSelect(res: string){        
+    function handleSelect(res: string){
         countryRef.current!.placeholder = res;
         setResults(null);
         setCountry(res);

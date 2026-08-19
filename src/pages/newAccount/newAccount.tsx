@@ -52,7 +52,8 @@ export default function NewAccount() {
                 email: email.toLocaleLowerCase(),
                 password: password,
                 first_name: firstName.toLocaleLowerCase(),
-                last_name: lastName.toLocaleLowerCase()
+                last_name: lastName.toLocaleLowerCase(),
+                country
             })
         })
 
@@ -74,22 +75,30 @@ export default function NewAccount() {
         }
     }
 
+    function borderColorGreen(e: React.ChangeEvent<HTMLInputElement>){
+        if(e.currentTarget.value.length !== 0 ){
+            e.currentTarget.style.borderColor = "yellowgreen";
+            return;
+        }
+        e.currentTarget.style.borderColor = "red";  
+    }
+
     return (
         <form>
             <fieldset className={styles["new-account"]}>
                 <legend>New Account</legend>
                 <label htmlFor="email">Email</label>
-                <input ref={emailRef} id="email" type="text" required />
+                <input onChange={(e) => borderColorGreen(e)} ref={emailRef} id="email" type="text" required />
                 <label>Country:</label>
                 <CountrySelect setCountry={setCountry}/>
                 <label htmlFor="first-name">First Name</label>
-                <input ref={firstNameRef} id="first-name" type="text" required />
+                <input onChange={(e) => borderColorGreen(e)} ref={firstNameRef} id="first-name" type="text" required />
                 <label htmlFor="last-name">Last Name</label>
-                <input ref={lastNameRef} id="last-name" type="text" required />
+                <input onChange={(e) => borderColorGreen(e)} ref={lastNameRef} id="last-name" type="text" required />
                 <label htmlFor="password">Password</label>
-                <input ref={passwordRef} id="password" type="password" required />
+                <input onChange={(e) => borderColorGreen(e)} ref={passwordRef} id="password" type="password" autoComplete='off' required />
                 <label htmlFor="password2">Re type Password</label>
-                <input ref={password2Ref} id="password2" type="password" required />
+                <input onChange={(e) => borderColorGreen(e)} ref={password2Ref} id="password2" type="password" autoComplete='off' required />
             </fieldset>
             <button type="submit" onClick={(e) => handleSubmit(e)}>Submit</button>
         </form>
