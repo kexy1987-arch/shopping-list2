@@ -116,7 +116,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                             <div>
                                 <h3>{titleCase(product.name)}</h3>
                                 <p>{titleCase(product.store)}</p>
-                                <p>Price: €{product.price}</p>
+                                <p>Price: {product.price} {product.currency}</p>
                                 <p>Category: {titleCase(product.category)}</p>
                             </div>
                             <div>
@@ -141,7 +141,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                     <div>
                         <h3>{titleCase(product.name)}</h3>
                         <p>{titleCase(product.store)}</p>
-                        <p>Price: €{product.price}</p>
+                        <p>Price: {product.price} {product.currency}</p>
                         <p>Category: {titleCase(product.category)}</p>
                     </div>
                     <div>
@@ -160,7 +160,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                     <img className={styles["card-img"]} src={itemDescription.image_url} alt={`Image of ${itemDescription.name}`}/> 
                 </div>                               
                 <p><strong>Store: </strong>{titleCase(itemDescription.store)}</p>
-                <p><strong>Price: </strong>€{itemDescription.price}</p>
+                <p><strong>Price: </strong>{itemDescription.price} {itemDescription.currency}</p>
                 <p><strong>Category: </strong>{titleCase(itemDescription.category)}</p>
                 <div>
                     <strong>Description:</strong>

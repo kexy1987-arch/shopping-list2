@@ -61,7 +61,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
                                 <div>
                                     <h3>{titleCase(product.name)}</h3>
                                     <p>{titleCase(product.store)}</p>
-                                    <p>Price: €{product.price}</p>
+                                    <p>Price: {product.price} {product.currency}</p>
                                     <p>Category: {titleCase(product.category)}</p>
                                 </div>
                                 <div>
@@ -83,7 +83,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
                     <div>
                         <h3>{titleCase(product.name)}</h3>
                         <p>{titleCase(product.store)}</p>
-                        <p>Price: €{product.price}</p>
+                        <p>Price: {product.price} {product.currency}</p>
                         <p>Category: {titleCase(product.category)}</p>
                     </div>
                     <div>

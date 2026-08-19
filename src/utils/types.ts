@@ -8,7 +8,8 @@ export type product = {
     barcode: string,
     image_url: string,
     created_at: string,
-    country: string
+    country: string,
+    currency: string
 }
 
 export type user = {
@@ -35,7 +36,8 @@ export type DbProduct = {
     barcode: string | null,
     image_url: string,
     created_at: string,
-    country: string
+    country: string,
+    currency: string
 }
 
 export type Stores = {

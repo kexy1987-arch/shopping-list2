@@ -62,10 +62,11 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
         setMyList(updated)
     }
 
-    function deleteItem(e: React.MouseEvent<HTMLButtonElement>, id: number){
+    function deleteItem(e: React.MouseEvent<HTMLButtonElement>, product: DbProduct){
         e.stopPropagation();
-        const updated = myList.filter(item => item.id !== id);
+        const updated = myList.filter(item => item.id !== product.id);
         setMyList(updated);
+        if(myList.length <= 1)setPrice(0);
         updateList(userId, updated);
     }
 
@@ -75,8 +76,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
 
         myListItems.forEach((item) => {
             const itemRef: ListItem | undefined = myList.find(itemRef => item.id === itemRef.id);
-            const amount = itemRef?.amount;
-            if(!amount) return;
+            const amount = itemRef?.amount || 0
             price += item.price * amount;
         })
         setPrice(price)
@@ -144,7 +144,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
                         ))}
                     </select>
                 </label>
-                <p>Total: €{price.toFixed(2)}</p>
+                <p>Total: {price.toFixed(2)}{myListItems[0] ? myListItems[0].currency : ""}</p>
             </div>
             <div className="list-container">
                 {myListItems && myList.map((item) => {
@@ -160,11 +160,11 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
                                 <div className={styles["product-info"]}>                                    
                                     <div className={styles["info-lines"]}><p>Store:</p> <span>{product.store.toLocaleUpperCase()}</span></div>
                                     <div className={styles["info-lines"]}><p>Category: </p> <span>{titleCase(product.category)}</span></div>
-                                    <div className={styles["info-lines"]}><p>Unit Price: </p><span>€{product.price}</span></div>                                    
-                                    <p>Total price: €{(product.price * item.amount!).toFixed(2)}</p>
+                                    <div className={styles["info-lines"]}><p>Unit Price: </p><span>{product.price} {product.currency}</span></div>                                    
+                                    <p>Total price: {(product.price * item.amount!).toFixed(2)} {product.currency}</p>
                                 </div>
                                 <div>
-                                    {item && <button onClick={(e) => deleteItem(e, item.id)}>Remove</button>}
+                                    {item && <button onClick={(e) => deleteItem(e, item)}>Remove</button>}
                                     <div>Amount: <br></br>{item && <span><button onClick={(e) => increaseAmount(e, item)}>+</button>{item.amount} pcs<button onClick={((e) => decreseAmount(e, item))}>-</button></span>}</div>
                                 </div>
                             </div>
