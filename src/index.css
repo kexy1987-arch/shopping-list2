@@ -186,3 +186,7 @@ span button{
 .fav-btn img{
   width: 3rem;
 }
+
+.country-select{
+  position: relative;
+}

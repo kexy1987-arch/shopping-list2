@@ -6,6 +6,7 @@ import Favorites from '../../components/favorites/favorites';
 import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
 
+
 type HomeProps = {
   user: user
 }
@@ -109,7 +110,7 @@ function Home({user}:HomeProps) {
   return (
     <>
       <h1>Shopping List</h1>
-      
+
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "create")}>{activePanel === "create" ? "x": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
 

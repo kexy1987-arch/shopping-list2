@@ -1,6 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import styles from './newAccount.module.css'
 import { useNavigate } from 'react-router-dom';
+import CountrySelect from '../../components/countrySelect/countrySelect';
 
 export default function NewAccount() {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -8,6 +9,7 @@ export default function NewAccount() {
     const password2Ref = useRef<HTMLInputElement>(null);
     const firstNameRef = useRef<HTMLInputElement>(null);
     const lastNameRef = useRef<HTMLInputElement>(null);
+    const [ country, setCountry] = useState<string>("");
     const API = import.meta.env.VITE_WORKER_API;
     const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ export default function NewAccount() {
         const password = passwordRef.current?.value;
         const password2 = password2Ref.current?.value;
 
-        if (!email || !firstName || !lastName|| (!password || password.length < 8) || (!password2 || password2.length < 8)){
+        if (!email || !firstName || !lastName|| (!password || password.length < 8) || (!password2 || password2.length < 8) || !country){
             if(!firstName){
                 firstNameRef.current!.style.borderColor = "red";
             }
@@ -78,6 +80,8 @@ export default function NewAccount() {
                 <legend>New Account</legend>
                 <label htmlFor="email">Email</label>
                 <input ref={emailRef} id="email" type="text" required />
+                <label>Country:</label>
+                <CountrySelect setCountry={setCountry}/>
                 <label htmlFor="first-name">First Name</label>
                 <input ref={firstNameRef} id="first-name" type="text" required />
                 <label htmlFor="last-name">Last Name</label>

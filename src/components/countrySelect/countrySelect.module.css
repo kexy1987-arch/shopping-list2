@@ -1,0 +1,21 @@
+.res{
+    background-color: antiquewhite;
+    color: black;
+    border: 1px solid black;
+    position: absolute;
+    z-index: 999;
+    padding: 0 5px;
+}
+
+.res p:hover {
+    background-color: white;
+}
+
+.input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.wrapper{
+    width: 100%;
+}

@@ -23,6 +23,7 @@
 
 .selected{
     box-shadow: 0 3px 10px greenyellow;
+    color: greenyellow;
 }
 
 .btn:hover::after{

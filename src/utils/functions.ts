@@ -6,7 +6,7 @@ export function titleCase(str: string) {
         .split(" ")
         .filter(word => word.length > 0)
         .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
-        .join(" ");
+        .join(" ") || "";
 }
 
 export function creatList(prev: ListItem[], myList: ListItem[], productId: number) {
