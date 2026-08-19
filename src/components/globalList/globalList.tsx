@@ -12,10 +12,11 @@ type GlobalListProps = {
     getFavs: (value: number) => void;
     favs: DbProduct[] | null;
     delFav: (userId: number, productId: number) => void;
-    updateList: (userId: number, myList: ListItem[]) => void
+    updateList: (userId: number, myList: ListItem[]) => void,
+    country: string
 }
 
-export default function GlobalList({myList, setMyList, updateList, userId, getFavs, favs, delFav}:GlobalListProps){
+export default function GlobalList({myList, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [list, setList] = useState<product[] | null>(null);
     const [itemFound, setItemFound] = useState<product[] | null>(null);
@@ -25,7 +26,14 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
     const [find, setFind] = useState<product[] | undefined>(undefined);
 
     async function getProducts() {
-        const res = await fetch(`${API}/get-products`)
+        const res = await fetch(`${API}/get-products`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain"
+            },
+            body: country
+        })
+
         const data = await res.json()
 
         if ( data.ok ) {
