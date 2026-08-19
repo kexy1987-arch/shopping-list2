@@ -4,6 +4,7 @@ import Scanner from './scanner';
 import type { DbProduct } from '../../utils/types';
 import ScannerRes from '../ScannerResults/scannerRes';
 import CountrySelect from '../../components/countrySelect/countrySelect';
+import currencyMap from '../../utils/functions';
 
 
 
@@ -46,8 +47,6 @@ export default function CreateNewProduct(){
         setCountry("");
         setImage(null);
         setBarcode(null);
-        
-        
     }
 
     function handleInputs(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>){
@@ -55,7 +54,46 @@ export default function CreateNewProduct(){
             ...formData,
             [e.target.name]: e.target.value.toLocaleLowerCase()
         })
+        const parent = e.currentTarget.parentElement;
+        const nextEl = parent?.nextElementSibling as HTMLElement || null;
+        
+        if (nextEl ){
+            const nextInput = nextEl.children[1] as HTMLInputElement || HTMLTextAreaElement;
+            if(nextInput instanceof HTMLTextAreaElement){
+                nextEl.classList.add(`${styles["textarea-height"]}`)
+                return;
+            }
+            nextEl.classList.add(`${styles.height}`);
+        }
     }
+
+    function onEnter(e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLTextAreaElement>){
+        if (e.key !== "Enter")return;
+        const parent = e.currentTarget.parentElement;
+        const nextEl = parent?.nextElementSibling as HTMLElement || null;
+
+        if (nextEl) {
+            const nextInput = nextEl.children[1] as HTMLInputElement || HTMLTextAreaElement;
+            nextInput.focus()
+            if (nextInput instanceof HTMLTextAreaElement) {
+                nextEl.classList.add(`${styles["textarea-height"]}`)
+                return;
+            }
+            nextEl.classList.add(`${styles.height}`);
+            
+        }
+    }
+
+    useEffect(() => {
+        const firstEl = document.querySelector(`.${styles["height"]}`) as HTMLElement || null;
+        const nextEl = firstEl?.nextElementSibling as HTMLElement || null;
+
+        if (country) {
+            nextEl.classList.add(`${styles.height}`)
+            const nextInput = nextEl.lastElementChild as HTMLInputElement
+            if (nextInput) nextInput.focus()
+        }
+}, [country])
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
@@ -64,11 +102,11 @@ export default function CreateNewProduct(){
             return;
         }
         const data = new FormData();
-        data.append("name", formData.name);
+        data.append("name", formData.name.toLocaleLowerCase());
         data.append("price", formData.price);
-        data.append("category", formData.category);
-        data.append("store", formData.store);
-        data.append("description", formData.description);
+        data.append("category", formData.category.toLocaleLowerCase());
+        data.append("store", formData.store.toLocaleLowerCase());
+        data.append("description", formData.description.toLocaleLowerCase());
         data.append("country", country);
         if ( barcode ) data.append("barcode", barcode!);
         if ( image ) data.append("image", image!);
@@ -110,11 +148,11 @@ export default function CreateNewProduct(){
 
     useEffect(() => {
         if(!selectedItem)return;
-        nameRef.current!.value = selectedItem.name;
+        nameRef.current!.value = selectedItem.name.toLocaleLowerCase();
         priceRef.current!.value = String(selectedItem.price);
-        categoryRef.current!.value = selectedItem.category;
-        storeRef.current!.value = selectedItem.store;
-        descriptionRef.current!.value = selectedItem.description;
+        categoryRef.current!.value = selectedItem.category.toLocaleLowerCase();
+        storeRef.current!.value = selectedItem.store.toLocaleLowerCase();
+        descriptionRef.current!.value = selectedItem.description.toLocaleLowerCase();
         if (selectedItem) setCountry(selectedItem.country);
         if (selectedItem.barcode) setBarcode(selectedItem.barcode);
 
@@ -142,32 +180,32 @@ export default function CreateNewProduct(){
                     e.preventDefault();
                 }
             }}>
-                <button type="button" onClick={() => setShowScanner(true)}>Barcode Scanner</button>
+                <button type="button" onClick={() => setShowScanner(true)}>Scan the Barcode</button>
                 <p>Barcode: {barcode}</p>
                 
-                <div className={styles["input-container"]}>
+                <div className={`${styles["input-container"]} ${styles.height}`}>
                     <label>Country: </label>
                     <CountrySelect setCountry={setCountry}/>
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="name">Product name:</label>
-                    <input ref={nameRef} type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
+                    <input onKeyDown={(e) => onEnter(e)} className={styles.input} ref={nameRef} type="text" id="name" name="name" autoComplete="off" onChange={(e) => handleInputs(e)}/>
                 </div>
                 <div className={styles["input-container"]}>
-                    <label htmlFor="price">Product price in €:</label>
-                    <input ref={priceRef} type="text" id="price" name="price" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <label htmlFor="price">Product price in {currencyMap(country)}:</label>
+                    <input onKeyDown={(e) => onEnter(e)} ref={priceRef} type="number" id="price" name="price" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="category">Product category:</label>
-                    <input ref={categoryRef} type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <input onKeyDown={(e) => onEnter(e)} ref={categoryRef} type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="description">Product description:</label>
-                    <textarea ref={descriptionRef} rows={5} id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <textarea onKeyDown={(e) => onEnter(e)} ref={descriptionRef} rows={5} id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="store">Store:</label>
-                    <input ref={storeRef} type="text" id="store" name="store" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <input onKeyDown={(e) => onEnter(e)} ref={storeRef} type="text" id="store" name="store" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="image">Image:</label>
@@ -179,8 +217,3 @@ export default function CreateNewProduct(){
         </div>
     )
 }
-
-/*
-
-
-            */

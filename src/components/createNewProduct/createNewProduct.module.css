@@ -3,6 +3,17 @@
     grid-template-columns: 1fr 1fr;
     width: 90%;
     margin-top: 1rem;
+    height: 0px;
+    overflow: hidden;
+    transition: height 1s ease;
+}
+
+.height{
+    height: 25px;
+}
+
+.textarea-height {
+    height: 75px;
 }
 
 .scanner{
