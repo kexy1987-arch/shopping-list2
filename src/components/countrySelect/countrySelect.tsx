@@ -45,7 +45,7 @@ export default function CountrySelect({setCountry}: CountrySelectProps){
             <input className={styles.input} ref={countryRef} onKeyDown={(e) => handleEnter(e)} onChange={(e) => handleCountry(e)} type="text" />
             <div className={styles.res}>
                 {results?.map(res => (
-                    <p onClick={() => handleSelect(res)}>{res}</p>
+                    <p key={res} onClick={() => handleSelect(res)}>{res}</p>
                 ))}
             </div>
             

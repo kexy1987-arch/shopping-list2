@@ -5,6 +5,7 @@ import MyList from '../../components/myList/myList';
 import Favorites from '../../components/favorites/favorites';
 import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
+import ChangeCountry from '../../components/changeCountry/changeCountry';
 
 
 type HomeProps = {
@@ -16,6 +17,7 @@ function Home({user}:HomeProps) {
   const [ activePanel, setActivePanel ] = useState<string | null>(null)
   const [myList, setMyList] = useState<ListItem[]>([]);
   const [favs, setFavs] = useState<DbProduct[] | null>(null);
+  const [ country, setCountry ] = useState<string>(user.country);
 
   async function getFavs(userId: number) {
     const req = await fetch(`${API}/getFavoriteProducts`, {
@@ -104,12 +106,13 @@ function Home({user}:HomeProps) {
     selected.classList.add(`${styles.selected}`)
   }
 
-  useEffect(() => { getMyList();}, [])
+  useEffect(() => { getMyList(); console.log(country)}, [])
 
 
   return (
     <>
       <h1>Shopping List</h1>
+      <ChangeCountry user={user}/>
 
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "create")}>{activePanel === "create" ? "x": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
