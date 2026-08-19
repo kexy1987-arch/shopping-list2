@@ -4,11 +4,12 @@ import styles from './changeCountry.module.css'
 import type { user } from "../../utils/types";
 
 type ChangeCountryProps = {
-    user: user
+    user: user,
+    country: string,
+    setCountry: (value: string) => void
 }
 
-export default function ChangeCountry({user}: ChangeCountryProps){
-    const [ country, setCountry] = useState<string>(user.country);
+export default function ChangeCountry({user, country, setCountry}: ChangeCountryProps){
     const [showSelect, setShowSelect] = useState<boolean>(false);
     const API = import.meta.env.VITE_WORKER_API;
 
@@ -40,10 +41,11 @@ export default function ChangeCountry({user}: ChangeCountryProps){
 
     return(
         <>
-            <button className={styles.country} onClick={() => setShowSelect(!showSelect)}>{user.country}</button>
+            <button className={styles.country} onClick={() => setShowSelect(!showSelect)}>{country}</button>
             {showSelect && 
                 <div className={styles.modal}>
                     <h2>Change country</h2>
+                    <h3>Current country: {country}</h3>
                     <CountrySelect setCountry={setCountry} />
                     <button onClick={() => setShowSelect(false)}>Cancel</button>
                 </div>

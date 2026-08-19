@@ -106,19 +106,19 @@ function Home({user}:HomeProps) {
     selected.classList.add(`${styles.selected}`)
   }
 
-  useEffect(() => { getMyList(); console.log(country)}, [])
+  useEffect(() => { getMyList(); }, [])
 
 
   return (
     <>
       <h1>Shopping List</h1>
-      <ChangeCountry user={user}/>
+      <ChangeCountry user={user} country={country} setCountry={setCountry}/>
 
       <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "create")}>{activePanel === "create" ? "x": "+"}</button>
       {activePanel === "create" && <CreateNewProduct />}
 
       <button className={`${styles["global-list-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "global-list")}>{activePanel === "global-list" ? "x" : <img src="/Internet.svg"/>}</button>
-      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav}/>}
+      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country}/>}
       
       <button className={`${styles["favorites-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "favorites")}>{activePanel === "favorites" ? "x" : <img src="/FavoriteFilled.svg" />}</button>
       {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs}/>}
