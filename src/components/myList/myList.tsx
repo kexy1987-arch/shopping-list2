@@ -164,7 +164,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
                                     <p>Total price: {(product.price * item.amount!).toFixed(2)} {product.currency}</p>
                                 </div>
                                 <div>
-                                    {item && <button onClick={(e) => deleteItem(e, item)}>Remove</button>}
+                                    {item && <button onClick={(e) => deleteItem(e, product)}>Remove</button>}
                                     <div>Amount: <br></br>{item && <span><button onClick={(e) => increaseAmount(e, item)}>+</button>{item.amount} pcs<button onClick={((e) => decreseAmount(e, item))}>-</button></span>}</div>
                                 </div>
                             </div>
