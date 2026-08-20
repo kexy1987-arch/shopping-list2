@@ -196,8 +196,8 @@ export default function CreateNewProduct(){
 
             const scale = img.width < 800 ? 2 : 1;
 
-            canvas.width = img.width;
-            canvas.height = img.height;
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
 
             if(ctx) {
                 ctx.filter = 'grayscale(100%) contrast(160%) brightness(120%)'
