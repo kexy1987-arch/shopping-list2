@@ -55,9 +55,11 @@ export default function CreateNewProduct(){
         setBarcode(null);
         setReset(!reset);
         const inputs = document.querySelectorAll(`.${styles["input-container"]}`);
-        inputs.forEach(i => {
-            i.classList.remove(styles.height)
-            i.classList.remove(styles["textarea-height"])
+        inputs.forEach((i, index) => {
+            if(index !== 0){
+                i.classList.remove(styles.height)
+                i.classList.remove(styles["textarea-height"])
+            }
         })
     }
 
