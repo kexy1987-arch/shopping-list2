@@ -19,7 +19,7 @@
 .scanner{
     position: absolute;
     top: 0px;
-    background-color: var(--bg);
+    background-color: var(--scanner-bg);
     width: 100%;
     max-width: 1124px;
     overflow-y: hidden;

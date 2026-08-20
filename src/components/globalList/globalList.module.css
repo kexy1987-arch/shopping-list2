@@ -2,9 +2,9 @@
     width: 90%;
     margin: 0.5rem auto;
     padding: 1rem;
-    background-color: rgba(255, 228, 196, 0.781);
+    background-color: var(--p-card-bg);
     border-radius: 1rem;
-    color: black;
+    color: var(--p-card-text);
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
@@ -31,13 +31,13 @@
 .modal{
     position: fixed;
     top: 7.5rem;
-    background-color: green;
+    background-color: var(--modal-bg);
     border-radius: 1rem;
     height: fit-content;
 }
 
 .description-modal{
-    background-color: var(--modal-bg);
+    background-color: var(--desc-modal-bg);
     width: 100vw;
     height: 100vh;
     max-width: 1120px;
@@ -68,7 +68,7 @@
 }
 
 .found{
-    background-color: antiquewhite;
+    background-color: var(--found-bg);
     width: 24rem;
     max-height: 34rem;
     overflow-y: scroll;

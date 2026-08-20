@@ -1,14 +1,14 @@
 .res{
-    background-color: antiquewhite;
-    color: black;
-    border: 1px solid black;
+    background-color: var(--cs-bg);
+    color: var(--cs-text-color);
+    border: var(--cs-border);
     position: absolute;
     z-index: 999;
     padding: 0 5px;
 }
 
 .res p:hover {
-    background-color: white;
+    background-color: var(--cs-p-bg);
 }
 
 .input{

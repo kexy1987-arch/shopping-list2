@@ -10,10 +10,10 @@
     align-items: center;
     z-index: 999;
     transition: transform 0.3s ease;
-    color: #0051FF;
+    color: var(--home-btn-color);
     font-weight: bolder;
     font-size: 1.5rem;
-    background-color: rgba(61, 61, 61, 0.808);
+    background-color: var(--home-btn-bg);
     box-shadow: var(--home-btn-shadow);
 }
 
@@ -22,20 +22,20 @@
 }
 
 .selected{
-    box-shadow: 0 3px 10px greenyellow;
-    color: greenyellow;
+    box-shadow: var(--home-sel-shadow);
+    color: var(--home-sel-color);
 }
 
 .btn:hover::after{
     position: absolute;
     top: 50%;
     transform: translate(-100%, -50%);
-    box-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
-    color: #fff;
+    box-shadow: var(--home-after-shadow);
+    color: var(--home-after-color);
     font-size: 14px;
     font-weight: 600;
     font-family: sans-serif;
-    background: #000;
+    background: var(--home-after-bg);
     padding: 6px 10px;
     border-radius: 6px;
 }

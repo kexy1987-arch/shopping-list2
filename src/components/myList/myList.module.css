@@ -1,7 +1,7 @@
 .product-info{
     width: fit-content;
     margin: auto;
-    color: black;
+    color: var(--p-info-text);
 }
 
 .product-info-container{
@@ -11,7 +11,7 @@
 }
 
 .product-name{
-    color: black;
+    color: var(--p-info-text);
     margin: 0;
     padding: 0;
     border-bottom: 1px solid;
@@ -21,7 +21,7 @@
 .info-lines{
     display: flex;
     justify-content:space-between;
-    border-bottom: 1px solid grey;
+    border-bottom: var(--i-lines-border);
 }
 
 .info-lines p, .info-lines span {
@@ -62,5 +62,5 @@
 }
 
 .filter>label>select>option{
-    background-color: black;
+    background-color: var(--f-option-bg);
 }
