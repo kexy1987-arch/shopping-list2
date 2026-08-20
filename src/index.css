@@ -24,11 +24,11 @@
   /*.btn: hover::after*/
   --home-after-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
   --home-after-color: white;
-  --home-after-bg: blacks
+  --home-after-bg: blacks;
   
   /*countrySelect.module*/
   /*.res*/
-    --cs-bg: antiquewhite;
+  --cs-bg: antiquewhite;
   --cs-text-color: black;
   --cs-border: 1px solid black;
   /*.res p:hover*/
@@ -38,6 +38,10 @@
   /*-----------------*/
 
   /*createNewProduct.module*/
+  /*.description-image-btn*/
+  --desc-btn-border: none;
+  --desc-btn-bg: gray;
+  --desc-btn-color: white;
   /*.scanner*/
   --scanner-bg: white;
 

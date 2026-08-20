@@ -8,7 +8,7 @@
     transition: height 1s ease;
 }
 
-.height{
+.height, .country{
     height: 25px;
 }
 
@@ -23,4 +23,19 @@
     width: 100%;
     max-width: 1124px;
     overflow-y: hidden;
+}
+
+.hide {
+    display: none !important;
+}
+
+.description-image-btn{
+    grid-column: span 2;
+    border: var(--desc-btn-border);
+    background-color: var(--desc-btn-bg);
+    color: var(--desc-btn-color);
+    width: fit-content;
+    margin: 0.5rem auto;
+    padding: 0 1rem;
+    border-radius: 1rem;
 }

@@ -1,15 +1,21 @@
 import styles from './countrySelect.module.css'
 import { countries }from '../../utils/countries'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { titleCase } from '../../utils/functions';
 
 type CountrySelectProps = {
     setCountry: (value: string) => void;
+    reset?: boolean;
 }
 
-export default function CountrySelect({setCountry}: CountrySelectProps){
+export default function CountrySelect({setCountry, reset= true}: CountrySelectProps){
     const countryRef = useRef<HTMLInputElement>(null);
     const [ results, setResults ] = useState<string[] | null>(null);
+
+    useEffect(() => {
+        countryRef.current!.value = "";
+        countryRef.current!.style.removeProperty("border");
+    },[reset])
 
     function handleCountry(e: React.ChangeEvent<HTMLInputElement>){
         const input = titleCase(e.currentTarget.value)
@@ -25,17 +31,16 @@ export default function CountrySelect({setCountry}: CountrySelectProps){
         if (e.key === "Enter" && input) {
             setCountry(userCountry[0]);
             setResults(null)
-            countryRef.current!.placeholder = userCountry[0];
-            countryRef.current!.value = ""
+            countryRef.current!.value = userCountry[0];
             e.currentTarget.style.borderColor = "yellowgreen";
             return;
         }
-        countryRef.current!.placeholder = "";
         e.currentTarget.style.borderColor = "red";
     }
 
     function handleSelect(res: string){
-        countryRef.current!.placeholder = res;
+        countryRef.current!.value = res;
+        countryRef.current!.style.border = "1px solid yellowgreen";
         setResults(null);
         setCountry(res);
     }

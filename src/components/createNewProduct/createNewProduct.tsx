@@ -6,6 +6,8 @@ import ScannerRes from '../ScannerResults/scannerRes';
 import CountrySelect from '../../components/countrySelect/countrySelect';
 import currencyMap from '../../utils/functions';
 import NotifBar from '../notifbar/notifbar';
+import Tesseract from 'tesseract.js';
+import Modal from '../modal/modal';
 
 
 
@@ -31,6 +33,8 @@ export default function CreateNewProduct(){
     const [ existingList, setExistingList] = useState<DbProduct[]>([]);
     const [ selectedItem, setSelectedItem] = useState<DbProduct | null>(null);
     const [ message, setMessage ] = useState<string>("")
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ reset, setReset ] = useState<boolean>(true);
 
     function resetForm(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
@@ -49,6 +53,12 @@ export default function CreateNewProduct(){
         setCountry("");
         setImage(null);
         setBarcode(null);
+        setReset(!reset);
+        const inputs = document.querySelectorAll(`.${styles["input-container"]}`);
+        inputs.forEach(i => {
+            i.classList.remove(styles.height)
+            i.classList.remove(styles["textarea-height"])
+        })
     }
 
     function handleInputs(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>){
@@ -170,8 +180,50 @@ export default function CreateNewProduct(){
         setFormData(newFormData);
     }, [selectedItem])
 
+    async function translateImg(e: React.ChangeEvent<HTMLInputElement>){
+
+        if(!e.currentTarget.files) return;
+        setLoading(true);
+        const image = e.currentTarget.files[0];
+        const langs = "eng+hun+deu+fra+spa+ita+por+nld+pol+ces+slk+ron+tur+rus+ukr+ara+heb+jpn+kor+chi_sim";
+        const img = new Image();
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const scale = img.width < 800 ? 2 : 1;
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            if(ctx) {
+                ctx.filter = 'grayscale(100%) contrast(160%) brightness(120%)'
+                ctx.drawImage(img, 0, 0);
+            }
+
+            canvas.toBlob(async (blob) => {
+                if(!blob) return;
+                const result = await Tesseract.recognize(
+                    blob,
+                    langs,
+                    { logger: info => console.log(info) }
+                );
+                if (descriptionRef.current) descriptionRef.current.value = result.data.text;
+                handleInputs({
+                    target: descriptionRef.current,
+                    currentTarget: descriptionRef.current
+                } as React.ChangeEvent<HTMLTextAreaElement>);
+                setLoading(false);
+            }, "image/png");
+        };
+
+        img.src = URL.createObjectURL(image);
+    }
+
     return(
         <div className='z-index'>
+            {loading && <Modal message={<h2>LOADING...</h2>}/>}
             <NotifBar message={message}/>
             <header className="header">
                 <h2 className='fixed'>Create / Update product</h2>
@@ -186,9 +238,9 @@ export default function CreateNewProduct(){
                 <button type="button" onClick={() => setShowScanner(true)}>Scan the Barcode</button>
                 <p>Barcode: {barcode}</p>
                 
-                <div className={`${styles["input-container"]} ${styles.height}`}>
+                <div className={`${styles["input-container"]} ${styles.country} ${styles.height}`}>
                     <label>Country: </label>
-                    <CountrySelect setCountry={setCountry}/>
+                    <CountrySelect setCountry={setCountry} reset={reset}/>
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="name">Product name:</label>
@@ -203,12 +255,15 @@ export default function CreateNewProduct(){
                     <input onKeyDown={(e) => onEnter(e)} ref={categoryRef} type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
                 </div>
                 <div className={styles["input-container"]}>
-                    <label htmlFor="description">Product description:</label>
-                    <textarea onKeyDown={(e) => onEnter(e)} ref={descriptionRef} rows={5} id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
-                </div>
-                <div className={styles["input-container"]}>
                     <label htmlFor="store">Store:</label>
                     <input onKeyDown={(e) => onEnter(e)} ref={storeRef} type="text" id="store" name="store" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                </div>
+                <div className={styles["input-container"]}>
+                    <label htmlFor="description">Product description:</label>
+                    <textarea onKeyDown={(e) => onEnter(e)} ref={descriptionRef} rows={5} id="description" name="description" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <label className={styles["description-image-btn"]} htmlFor="image">Use Photo</label>
+                    <input className={styles.hide} id="image" type="file" accept="image/*" onChange={(e) => translateImg(e)} />
+
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="image">Image:</label>
