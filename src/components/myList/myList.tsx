@@ -2,6 +2,7 @@ import styles from './myList.module.css'
 import type { DbProduct, ListItem, Stores } from '../../utils/types'
 import { useState, useEffect } from 'react';
 import { titleCase } from '../../utils/functions';
+import NotifBar from '../notifbar/notifbar';
 
 type MyListProps = {
     myList: ListItem[],
@@ -16,6 +17,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
     const [currentStore, setCurrentStore] = useState<string>("all")
     const [stores, setStores] = useState<Stores[]>([]);
     const [price, setPrice] = useState<number>(0);
+    const [notif, setNotif] = useState<string>("");
 
 
     async function getMyListItems(myList: ListItem[]) {
@@ -68,6 +70,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
         setMyList(updated);
         if(myList.length <= 1)setPrice(0);
         updateList(userId, updated);
+        setNotif(`${titleCase(product.name)} removed from your list.`)
     }
 
     function calcPrice(){
@@ -135,6 +138,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
     
     return(
         <div>
+            <NotifBar message={notif} />
             <div className={styles.filter}>
                 <label>Filter by store:
                     <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>
@@ -155,7 +159,7 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
                             <h2 className={styles["product-name"]}>{titleCase(product.name)}</h2>
                             <div className={styles["product-info-container"]}>
                                 <div className={styles["img-container"]}>
-                                    <img src={product.image_url} alt={`Photo of ${product.name}`} />
+                                    <img src={product.image_url ? product.image_url : "/unknown_item.png"} alt={`Photo of ${product.name}`} />
                                 </div>
                                 <div className={styles["product-info"]}>                                    
                                     <div className={styles["info-lines"]}><p>Store:</p> <span>{product.store.toLocaleUpperCase()}</span></div>

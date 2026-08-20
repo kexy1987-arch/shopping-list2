@@ -4,7 +4,7 @@ import { titleCase } from "../../utils/functions";
 
 type ItemFoundProps = {
     products: product[],
-    addToMyList: (e: React.MouseEvent<HTMLButtonElement> ,productId: number) => void,
+    addToMyList: (e: React.MouseEvent<HTMLButtonElement> ,product: product) => void,
     setItemFound: (value: product[] | null) => void
 }
 
@@ -24,7 +24,7 @@ export default function ItemFound({products, addToMyList, setItemFound}: ItemFou
                             <p>Category: {titleCase(product.category)}</p>
                         </div>
                         <div>
-                            <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
+                            <button onClick={(e) => addToMyList(e, product)}>Add to my list</button>
                             <button onClick={() => setItemFound(null)}>Close</button>
                         </div>
                     </div>

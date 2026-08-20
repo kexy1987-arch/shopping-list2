@@ -1,9 +1,11 @@
 import type { DbProduct, ListItem } from '../../utils/types'
 import styles from '../globalList/globalList.module.css'
-import style from './favorites.module.css'
 import { titleCase } from '../../utils/functions'
 import { creatList } from '../../utils/functions'
 import { useEffect, useState } from 'react'
+import Modal from '../modal/modal'
+import NotifBar from '../notifbar/notifbar'
+
 
 
 type FavoritesProps = {
@@ -17,21 +19,24 @@ type FavoritesProps = {
 }
 
 export default function Favorites({favs, delFav, userId, myList, setMyList, updateList, getFavs}: FavoritesProps){
-    const [find, setFind] = useState<DbProduct[] | undefined>(undefined);
+    const [ find, setFind ] = useState<DbProduct[] | undefined>(undefined);
+    const [ message, setMessage ] = useState<string>("");
 
     useEffect(() => {
         getFavs(userId)
     }, [])
 
-    function delFavorite(e: React.MouseEvent<HTMLButtonElement>, productId: number) {
+    function delFavorite(e: React.MouseEvent<HTMLButtonElement>, product: DbProduct) {
         e.stopPropagation();
-        delFav(userId, productId);
+        delFav(userId, product.id);
+        setMessage(`${titleCase(product.name)} removed from Favorites`);
     }
 
-    function addToMyList(e: React.MouseEvent<HTMLButtonElement>, productId: number){
+    function addToMyList(e: React.MouseEvent<HTMLButtonElement>, product: DbProduct){
             e.stopPropagation();        
-            setMyList(prev => creatList(prev, myList, productId));
-            updateList(userId, creatList(myList, myList, productId));
+            setMyList(prev => creatList(prev, myList, product.id));
+            updateList(userId, creatList(myList, myList, product.id));
+            setMessage(`${titleCase(product.name)} added to your Shopping List`);
         }
 
     function search(e: React.ChangeEvent<HTMLInputElement>, list: DbProduct[]){
@@ -46,6 +51,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
 
     return(
         <div className='z-index vh'>
+            <NotifBar message={message}/>
             <header className="header">
                 <h2 className='fixed'>Favorites</h2>
             </header>
@@ -56,7 +62,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
                         {find ? find.map(product => (
                             <div key={product.id} className={styles["product-card"]}>
                                 <div className={styles["card-img-container"]}>
-                                    <img className={styles["card-img"]} src={product.image_url} alt={`Photo of ${product.name}`} />
+                                    <img className={styles["card-img"]} loading="lazy" src={product.image_url ? product.image_url : "/unknown_item.png"} alt={`Photo of ${product.name}`} />
                                 </div>
                                 <div>
                                     <h3>{titleCase(product.name)}</h3>
@@ -65,7 +71,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
                                     <p>Category: {titleCase(product.category)}</p>
                                 </div>
                                 <div>
-                                    <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
+                                    <button onClick={(e) => addToMyList(e, product)}>Add to my list</button>
                                 </div>
                             </div>
                         ))
@@ -78,7 +84,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
             {favs && favs.length !== 0 ? favs.map(product => (
                 <div key={product.id} className={styles["product-card"]}>
                     <div className={styles["card-img-container"]}>
-                        <img className={styles["card-img"]} src={product.image_url} alt={`Photo of ${product.name}`} />
+                        <img className={styles["card-img"]} src={product.image_url ? product.image_url : "/unknown_item.png"} alt={`Photo of ${product.name}`} />
                     </div>
                     <div>
                         <h3>{titleCase(product.name)}</h3>
@@ -87,15 +93,13 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
                         <p>Category: {titleCase(product.category)}</p>
                     </div>
                     <div>
-                        <button onClick={(e) => addToMyList(e, Number(product.id))}>Add to my list</button>
-                        {!favs?.find(fav => fav.id === product.id) ? "" : <button className="fav-btn" onClick={(e) => delFavorite(e, product.id)}><img src="/FavoriteFilled.svg" /></button>}
+                        <button onClick={(e) => addToMyList(e, product)}>Add to my list</button>
+                        {!favs?.find(fav => fav.id === product.id) ? "" : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
                     </div>
                 </div>
             ))
                 : 
-            <div className={style.modal}>
-                <h2>No Favorites</h2>
-            </div>
+                <Modal message={<h2>No Favorites yet</h2>} />                
             }
         </div>
     )

@@ -5,6 +5,7 @@ import type { DbProduct } from '../../utils/types';
 import ScannerRes from '../ScannerResults/scannerRes';
 import CountrySelect from '../../components/countrySelect/countrySelect';
 import currencyMap from '../../utils/functions';
+import NotifBar from '../notifbar/notifbar';
 
 
 
@@ -29,6 +30,7 @@ export default function CreateNewProduct(){
     const [ showExistingItems, setShowExistingItems] = useState<boolean>(false);
     const [ existingList, setExistingList] = useState<DbProduct[]>([]);
     const [ selectedItem, setSelectedItem] = useState<DbProduct | null>(null);
+    const [ message, setMessage ] = useState<string>("")
 
     function resetForm(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
@@ -98,7 +100,7 @@ export default function CreateNewProduct(){
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
         if ( !country || !nameRef || ! priceRef || !categoryRef || !descriptionRef || !storeRef || !barcode ){
-            alert("Please fill all the fields!")
+            setMessage("Please fill all the fields!");
             return;
         }
         const data = new FormData();
@@ -119,7 +121,7 @@ export default function CreateNewProduct(){
         const res = await req.json();
 
         if ( res.ok ){
-            alert("New Product added to the global list.")
+            setMessage("New Product added to the global list.");
         } else {
             console.log(res.message)
         }
@@ -170,6 +172,7 @@ export default function CreateNewProduct(){
 
     return(
         <div className='z-index'>
+            <NotifBar message={message}/>
             <header className="header">
                 <h2 className='fixed'>Create / Update product</h2>
             </header>

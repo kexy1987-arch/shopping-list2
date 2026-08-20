@@ -38,9 +38,6 @@
 
 .description-modal{
     background-color: var(--desc-modal-bg);
-    width: 100vw;
-    height: 100vh;
-    max-width: 1120px;
     position: fixed;
     top: 0;
     overflow-wrap: break-word;
@@ -74,4 +71,9 @@
     overflow-y: scroll;
     position: absolute;
     box-shadow: var(--shadow);
+}
+
+.message{
+    width: 80%;
+    margin: auto;
 }

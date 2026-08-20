@@ -51,7 +51,8 @@
   --p-card-text: black;
 
   /*.modal*/
-  --modal-bg: green;
+  --modal-bg: rgba(0, 132, 185, 0.822);
+  --modal-text: white;
 
   /*.description-modal*/
   --desc-modal-bg: rgba(0, 0, 0, 0.884);
@@ -76,9 +77,19 @@
   /*.product-card*/
   --scan-pcard-bg: rgba(255, 228, 196, 0.781);
   --scan-pcard-text: black;
+
+  /*NotifBar*/
+    --notif-bg: rgba(0, 132, 185, 0.959);
+    --notif-text: black;
+    --notif-border: 3px double white;
+    --notif-shadow: 0 6px 20px 10px rgb(47, 144, 255);
+
+
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+
+
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;

@@ -1,0 +1,15 @@
+.notifbar{
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 25px;
+    overflow: hidden;
+    padding: 0.5rem 1rem;
+    background-color: var(--notif-bg);
+    color: var(--notif-text);
+    text-align: left;
+    box-shadow: var(--notif-shadow);
+    border-bottom: var(--notif-border);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
