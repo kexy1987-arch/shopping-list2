@@ -12,8 +12,6 @@ import Modal from '../modal/modal';
 
 export default function CreateNewProduct(){
     const API = import.meta.env.VITE_WORKER_API;
-    const azureAPI = import.meta.env.VITE_AZURE_API;
-    const azureKey = import.meta.env.VITE_AZURE_KEY;
 
     const [showScanner, setShowScanner] = useState<boolean>(false);
     const [formData, setFormData] = useState({
