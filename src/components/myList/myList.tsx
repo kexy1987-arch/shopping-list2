@@ -146,7 +146,7 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
         calcPrice()
     }, [myListItems])
 
-    async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, userId: number, product: product) {
+    async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, userId: number, product: DbProduct) {
         e.stopPropagation();
         const req = await fetch(`${API}/addToFavorites`, {
             method: "POST",
