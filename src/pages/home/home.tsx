@@ -50,10 +50,10 @@ function Home({user}:HomeProps) {
     }
   }
 
-  async function getMyList(){
+  async function getMyList(userId: number){
     const req = await fetch(`${API}/my-list`, {
       method: "POST",
-      body: JSON.stringify(user.id)
+      body: JSON.stringify(userId)
     })
 
     const res = await req.json();
@@ -106,7 +106,7 @@ function Home({user}:HomeProps) {
     selected.classList.add(`${styles.selected}`)
   }
 
-  useEffect(() => { getMyList(); }, [])
+  useEffect(() => { getMyList(user.id); }, [])
 
 
   return (
@@ -123,7 +123,7 @@ function Home({user}:HomeProps) {
       <button className={`${styles["favorites-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "favorites")}>{activePanel === "favorites" ? "x" : <img src="/FavoriteFilled.svg" />}</button>
       {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs}/>}
       
-      {!activePanel && <MyList favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
+      {!activePanel && <MyList getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
     </>
   )
 }

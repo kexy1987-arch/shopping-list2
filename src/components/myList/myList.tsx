@@ -12,9 +12,10 @@ type MyListProps = {
     getFavs: (value: number) => void;
     favs: DbProduct[] | null;
     delFav: (userId: number, productId: number) => void;
+    getMyList: (value: number) => void
 }
 
-export default function MyList({ myList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
+export default function MyList({ myList, getMyList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [currentStore, setCurrentStore] = useState<string>("all")
@@ -101,13 +102,8 @@ export default function MyList({ myList, setMyList, updateList, userId, favs, ge
         );
 
         const sorted = updated.sort((a, b) => Number(a.bought) - Number(b.bought));
+        console.log(sorted);
 
-        setTimeout(() => {
-            setMyList(sorted);
-        }, 201)  
-        
-        
-        
         const req = await fetch(`${API}/buy`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -118,22 +114,14 @@ export default function MyList({ myList, setMyList, updateList, userId, favs, ge
         })
 
         const res = await req.json();
+        if(res.ok){
+            getMyList(userId)
+        }
         if(!res.ok){
             console.log(res.error);
         }
         
         if (el) {
-                       
-
-            setTimeout(() => {                
-                el.classList.toggle("notbought");
-            }
-            
-            , 202)
-            setTimeout(() => {
-                el.classList.toggle("bought")
-            }, 203)
-            
             setTimeout(() => {   
                 el.classList.remove("hide")
             }, 304)
@@ -198,7 +186,7 @@ export default function MyList({ myList, setMyList, updateList, userId, favs, ge
                     const product = myListItems.find(p => p.id === item.id)
                     if (!product) return null;
                     return (
-                        <div key={item.id} id={`item-${item.id}`} className="my-product-card notbought" onClick={() => buy(item!)}>
+                        <div key={item.id} id={`item-${item.id}`} className={`my-product-card ${item.bought ? "bought" : "notbought"}`} onClick={() => buy(item!)}>
                             <h2 className={styles["product-name"]}>{titleCase(product.name)}</h2>
                             <div className={styles["product-info-container"]}>
                                 <div className={styles["img-container"]}>
