@@ -88,22 +88,39 @@ export default function MyList({ myList, setMyList, updateList, userId, favs, ge
         setPrice(price)
     }
 
-    function buy(item: ListItem) {
+    async function buy(item: ListItem) {
         const el = document.getElementById(`item-${item.id}`)
         if (el) {
             el.classList.add("hide")
         }
 
+        const updated = myList.map(prevItem =>
+            prevItem.id === item.id
+                ? { ...prevItem, bought: !prevItem.bought }
+                : prevItem
+        );
+
+        const sorted = updated.sort((a, b) => Number(a.bought) - Number(b.bought));
+
         setTimeout(() => {
-            setMyList(prev => {
-                const updated = prev.map(prevItem =>
-                    prevItem.id === item.id
-                        ? { ...prevItem, bought: !prevItem.bought }
-                        : prevItem
-                );
-                return updated.sort((a, b) => Number(a.bought) - Number(b.bought));
-            });
-        }, 201)        
+            setMyList(sorted);
+        }, 201)  
+        
+        
+        
+        const req = await fetch(`${API}/buy`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                myList: sorted,
+                userId
+             })
+        })
+
+        const res = await req.json();
+        if(!res.ok){
+            console.log(res.error);
+        }
         
         if (el) {
                        
