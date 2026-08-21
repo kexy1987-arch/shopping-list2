@@ -43,3 +43,17 @@ export type DbProduct = {
 export type Stores = {
     store: string
 }
+
+export type AzureOCRLine = {
+    text: string;
+};
+
+export type AzureOCRBlock = {
+    lines: AzureOCRLine[];
+};
+
+export type AzureOCRResponse = {
+    readResult?: {
+        blocks?: AzureOCRBlock[];
+    };
+};

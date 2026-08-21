@@ -1,18 +1,20 @@
 import styles from './createNewProduct.module.css'
 import React, { useEffect, useState, useRef } from "react"
 import Scanner from './scanner';
-import type { DbProduct } from '../../utils/types';
+import type { AzureOCRResponse, DbProduct } from '../../utils/types';
 import ScannerRes from '../ScannerResults/scannerRes';
 import CountrySelect from '../../components/countrySelect/countrySelect';
 import currencyMap from '../../utils/functions';
 import NotifBar from '../notifbar/notifbar';
-import Tesseract from 'tesseract.js';
 import Modal from '../modal/modal';
 
 
 
 export default function CreateNewProduct(){
     const API = import.meta.env.VITE_WORKER_API;
+    const azureAPI = import.meta.env.VITE_AZURE_API;
+    const azureKey = import.meta.env.VITE_AZURE_KEY;
+
     const [showScanner, setShowScanner] = useState<boolean>(false);
     const [formData, setFormData] = useState({
         name: "",
@@ -182,46 +184,45 @@ export default function CreateNewProduct(){
         setFormData(newFormData);
     }, [selectedItem])
 
-    async function translateImg(e: React.ChangeEvent<HTMLInputElement>){
-
-        if(!e.currentTarget.files) return;
+    async function translateImg(e: React.ChangeEvent<HTMLInputElement>) {
+        if (!e.currentTarget.files) return;
         setLoading(true);
-        const image = e.currentTarget.files[0];
-        const langs = "eng+hun+deu+fra+spa+ita+por+nld+pol+ces+slk+ron+tur+rus+ukr+ara+heb+jpn+kor+chi_sim";
-        const img = new Image();
 
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
+        const file = e.currentTarget.files[0];
+        const blob = file;
 
-            const scale = img.width < 800 ? 2 : 1;
+        const url = `${azureAPI}/computervision/imageanalysis:analyze?features=read`;
 
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": file.type,
+                "Ocp-Apim-Subscription-Key": azureKey
+            },
+            body: blob
+        });
 
-            if(ctx) {
-                ctx.filter = 'grayscale(100%) contrast(160%) brightness(120%)'
-                ctx.drawImage(img, 0, 0);
-            }
+        const data = await response.json() as AzureOCRResponse;
 
-            canvas.toBlob(async (blob) => {
-                if(!blob) return;
-                const result = await Tesseract.recognize(
-                    blob,
-                    langs,
-                    { logger: info => console.log(info) }
-                );
-                if (descriptionRef.current) descriptionRef.current.value = result.data.text;
-                handleInputs({
-                    target: descriptionRef.current,
-                    currentTarget: descriptionRef.current
-                } as React.ChangeEvent<HTMLTextAreaElement>);
-                setLoading(false);
-            }, "image/png");
-        };
+        // Extract text from Azure OCR response
+        const lines = data.readResult?.blocks?.flatMap(b =>
+            b.lines.map(l => l.text)
+        ) || [];
 
-        img.src = URL.createObjectURL(image);
+        const text = lines.join("\n");
+
+        if (descriptionRef.current) {
+            descriptionRef.current.value = text;
+
+            handleInputs({
+                target: descriptionRef.current,
+                currentTarget: descriptionRef.current
+            } as React.ChangeEvent<HTMLTextAreaElement>);
+        }
+
+        setLoading(false);
     }
+
 
     return(
         <div className='z-index'>
