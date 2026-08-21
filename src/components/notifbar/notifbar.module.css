@@ -12,4 +12,5 @@
     border-bottom: var(--notif-border);
     transition: opacity 0.3s ease;
     opacity: 0;
+    z-index: 99999;
 }

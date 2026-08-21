@@ -111,7 +111,14 @@ export default function CreateNewProduct(){
 
     async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
-        if ( !country || !nameRef || ! priceRef || !categoryRef || !descriptionRef || !storeRef || !barcode ){
+        if (
+            !formData.name ||
+            !formData.price ||
+            !formData.category ||
+            !formData.store ||
+            !formData.description ||
+            !country
+        ) {
             setMessage("Please fill all the fields!");
             return;
         }
@@ -120,9 +127,9 @@ export default function CreateNewProduct(){
         data.append("price", formData.price);
         data.append("category", formData.category.toLocaleLowerCase());
         data.append("store", formData.store.toLocaleLowerCase());
-        data.append("description", formData.description.toLocaleLowerCase());
-        data.append("country", country);
-        if ( barcode ) data.append("barcode", barcode!);
+        data.append("description", formData.description);
+        if ( country ) data.append("country", country);
+        if ( barcode ) data.append("barcode", barcode ? barcode : "");
         if ( image ) data.append("image", image!);
         
         const req = await fetch(`${API}/update-product`, {
