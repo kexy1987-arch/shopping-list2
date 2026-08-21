@@ -215,7 +215,12 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
                     if (!product) return null;
                     return (
                         <div key={item.id} id={`item-${item.id}`} className={`my-product-card ${item.bought ? "bought" : "notbought"}`} onClick={() => buy(item!)}>
-                            <h2 className={styles["product-name"]}>{titleCase(product.name)}</h2>
+                            <div className={styles["product-name"]}>
+                                {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
+                            <h2>{titleCase(product.name)}</h2>
+                            <div></div>
+                            </div>
+                            
                             <div className={styles["product-info-container"]}>
                                 <div className={styles["img-container"]}>
                                     <img src={product.image_url ? product.image_url : "/unknown_item.png"} alt={`Photo of ${product.name}`} />
@@ -228,7 +233,7 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
                                 </div>
                                 <div>
                                     {item && <button onClick={(e) => deleteItem(e, product)}>Remove</button>}
-                                    {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
+                                    
                                     <div>Amount: <br></br>{item && <span><button onClick={(e) => increaseAmount(e, item)}>+</button>{item.amount} pcs<button onClick={((e) => decreseAmount(e, item))}>-</button></span>}</div>
                                 </div>
                             </div>

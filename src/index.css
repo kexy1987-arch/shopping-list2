@@ -234,11 +234,13 @@ span button{
   box-sizing: border-box;
   transition: height 0.2s ease;
   overflow: hidden;
-  height: 11rem;
-  @media (max-width: 440px) {
-      height: 9rem;
-      font-size: 0.6rem
-    }
+  height: fit-content;
+}
+
+@media (max-width: 440px) {
+  .my-product-card{
+    font-size: 0.7rem
+  }  
 }
 
 .bought {
@@ -259,8 +261,6 @@ span button{
 }
 
 .fav-btn{
-  width: fit-content;
-  height: fit-content;
   background-color: transparent;
   border: none;
   margin: 0px;
@@ -268,7 +268,10 @@ span button{
 }
 
 .fav-btn img{
-  width: 3rem;
+  width: 2rem;
+  @media (min-width: 440) {
+    width: 3rem;
+  }
 }
 
 .country-select{

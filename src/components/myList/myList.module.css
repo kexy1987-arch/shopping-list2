@@ -11,11 +11,17 @@
 }
 
 .product-name{
+    display: flex;
+    justify-content: space-between;
     color: var(--p-info-text);
     margin: 0;
-    padding: 0;
+    padding: 0 1rem;
     border-bottom: 1px solid;
     box-shadow: var(--shadow);
+}
+
+@media (max-width: 440px) {
+    .product-name h2{font-size: 13px;}
 }
 
 .info-lines{
@@ -63,4 +69,8 @@
 
 .filter>label>select>option{
     background-color: var(--f-option-bg);
+}
+
+.head{
+    display: flex;
 }
