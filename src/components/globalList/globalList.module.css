@@ -38,10 +38,11 @@
 
 .description-modal{
     background-color: var(--desc-modal-bg);
-    position: fixed;
-    top: 0;
     overflow-wrap: break-word;
-    overflow-x: scroll;
+}
+
+.desc {
+    margin: 0.5rem 0;
 }
 
 .img-container {

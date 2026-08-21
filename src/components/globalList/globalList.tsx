@@ -15,10 +15,11 @@ type GlobalListProps = {
     favs: DbProduct[] | null;
     delFav: (userId: number, productId: number) => void;
     updateList: (userId: number, myList: ListItem[]) => void,
-    country: string
+    country: string,
+    setActivePanel: (value: string) => void
 }
 
-export default function GlobalList({myList, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
+export default function GlobalList({myList, setActivePanel, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [ list, setList ] = useState<product[] | null>(null);
     const [ itemFound, setItemFound ] = useState<product[] | null>(null);
@@ -184,7 +185,8 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                 <Modal message={<div>
                     <h2>Please create the first product!</h2>
                     <p>Click or tap the top right "+" button, to add a product to the global list.</p>
-                </div>}/>
+                </div>} />
+                
             }
             {
             itemDescription && 
@@ -196,12 +198,12 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                     <p><strong>Store: </strong>{titleCase(itemDescription.store)}</p>
                     <p><strong>Price: </strong>{itemDescription.price} {itemDescription.currency}</p>
                     <p><strong>Category: </strong>{titleCase(itemDescription.category)}</p>
-                    <div>
+                    <div className={styles.desc}>
                         <strong>Description:</strong>
                         <p>{itemDescription.description}</p>
                     </div>
                     <p>Last update: {itemDescription.created_at}</p>
-                </div>} />
+                </div>} />                
             }
         </div>
     )
