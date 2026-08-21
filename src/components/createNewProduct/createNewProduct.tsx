@@ -189,38 +189,33 @@ export default function CreateNewProduct(){
         setLoading(true);
 
         const file = e.currentTarget.files[0];
-        const blob = file;
+        const formData = new FormData();
+        formData.append("file", file);
 
-        const url = `${azureAPI}/computervision/imageanalysis:analyze?features=read`;
-
-        const response = await fetch(url, {
+        const azureocr = await fetch(`${API}/acureocr`, {
             method: "POST",
-            headers: {
-                "Content-Type": file.type,
-                "Ocp-Apim-Subscription-Key": azureKey
-            },
-            body: blob
-        });
+            body: formData
+        })       
+        
+        const data = await azureocr.json();
 
-        const data = await response.json() as AzureOCRResponse;
+        if(data.ok){
+            const text = data.text;
+            if (descriptionRef.current) {
+                descriptionRef.current.value = text;
 
-        // Extract text from Azure OCR response
-        const lines = data.readResult?.blocks?.flatMap(b =>
-            b.lines.map(l => l.text)
-        ) || [];
+                handleInputs({
+                    target: descriptionRef.current,
+                    currentTarget: descriptionRef.current
+                } as React.ChangeEvent<HTMLTextAreaElement>);
+            }
 
-        const text = lines.join("\n");
-
-        if (descriptionRef.current) {
-            descriptionRef.current.value = text;
-
-            handleInputs({
-                target: descriptionRef.current,
-                currentTarget: descriptionRef.current
-            } as React.ChangeEvent<HTMLTextAreaElement>);
+            setLoading(false);
         }
 
-        setLoading(false);
+        
+
+        
     }
 
 
