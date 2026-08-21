@@ -16,10 +16,9 @@ type GlobalListProps = {
     delFav: (userId: number, productId: number) => void;
     updateList: (userId: number, myList: ListItem[]) => void,
     country: string,
-    setActivePanel: (value: string) => void
 }
 
-export default function GlobalList({myList, setActivePanel, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
+export default function GlobalList({myList, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [ list, setList ] = useState<product[] | null>(null);
     const [ itemFound, setItemFound ] = useState<product[] | null>(null);
