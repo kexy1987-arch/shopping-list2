@@ -91,6 +91,7 @@ function Home({user}:HomeProps) {
   }  
 
   function handlePanelToggle(e: React.MouseEvent<HTMLButtonElement>, panelName: string){
+    console.log(panelName)
     if ( activePanel === panelName ) {
       setActivePanel(null);
     } else {

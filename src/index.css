@@ -234,10 +234,10 @@ span button{
   box-sizing: border-box;
   transition: height 0.2s ease;
   overflow: hidden;
-  height: fit-content;
+  height: 12rem;
 }
 
-@media (max-width: 440px) {
+@media (max-width: 477px) {
   .my-product-card{
     font-size: 0.7rem
   }  
