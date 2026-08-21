@@ -223,3 +223,4 @@ const countryCurrency: Record<string, string> = {
 export default function currencyMap(country: string) {
     return countryCurrency[country];
 }
+

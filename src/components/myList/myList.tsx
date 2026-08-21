@@ -1,17 +1,20 @@
 import styles from './myList.module.css'
 import type { DbProduct, ListItem, Stores } from '../../utils/types'
 import { useState, useEffect } from 'react';
-import { titleCase } from '../../utils/functions';
+import currencyMap, { titleCase } from '../../utils/functions';
 import NotifBar from '../notifbar/notifbar';
 
 type MyListProps = {
     myList: ListItem[],
     setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
     updateList: (userId: number, myList: ListItem[]) => void,
-    userId: number
+    userId: number,
+    getFavs: (value: number) => void;
+    favs: DbProduct[] | null;
+    delFav: (userId: number, productId: number) => void;
 }
 
-export default function MyList({ myList, setMyList, updateList, userId}:MyListProps) {
+export default function MyList({ myList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [currentStore, setCurrentStore] = useState<string>("all")
@@ -135,6 +138,29 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
     useEffect(() => {
         calcPrice()
     }, [myListItems])
+
+    async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, userId: number, product: product) {
+        e.stopPropagation();
+        const req = await fetch(`${API}/addToFavorites`, {
+            method: "POST",
+            body: JSON.stringify({
+                userId: userId,
+                productId: product.id
+            })
+        })
+        const res = await req.json();
+        if (res.ok) {
+            console.log(res.message)
+            getFavs(userId)
+        } else {
+            console.log(res.error)
+        }
+    }
+
+    function delFavorite (e: React.MouseEvent<HTMLButtonElement>, product: DbProduct) {
+            e.stopPropagation();
+            delFav(userId, product.id);
+        }
     
     return(
         <div>
@@ -164,11 +190,12 @@ export default function MyList({ myList, setMyList, updateList, userId}:MyListPr
                                 <div className={styles["product-info"]}>                                    
                                     <div className={styles["info-lines"]}><p>Store:</p> <span>{product.store.toLocaleUpperCase()}</span></div>
                                     <div className={styles["info-lines"]}><p>Category: </p> <span>{titleCase(product.category)}</span></div>
-                                    <div className={styles["info-lines"]}><p>Unit Price: </p><span>{product.price} {product.currency}</span></div>                                    
+                                    <div className={styles["info-lines"]}><p>Unit Price: </p><span>{product.price} {currencyMap(product.country)}</span></div>                                    
                                     <p>Total price: {(product.price * item.amount!).toFixed(2)} {product.currency}</p>
                                 </div>
                                 <div>
                                     {item && <button onClick={(e) => deleteItem(e, product)}>Remove</button>}
+                                    {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
                                     <div>Amount: <br></br>{item && <span><button onClick={(e) => increaseAmount(e, item)}>+</button>{item.amount} pcs<button onClick={((e) => decreseAmount(e, item))}>-</button></span>}</div>
                                 </div>
                             </div>

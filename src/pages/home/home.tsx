@@ -123,7 +123,7 @@ function Home({user}:HomeProps) {
       <button className={`${styles["favorites-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "favorites")}>{activePanel === "favorites" ? "x" : <img src="/FavoriteFilled.svg" />}</button>
       {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs}/>}
       
-      {!activePanel && <MyList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
+      {!activePanel && <MyList favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
     </>
   )
 }

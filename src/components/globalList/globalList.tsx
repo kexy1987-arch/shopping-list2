@@ -6,6 +6,7 @@ import Scanner from '../createNewProduct/scanner';
 import ItemFound from './itemFound';
 import Modal from '../modal/modal';
 import NotifBar from '../notifbar/notifbar';
+import currencyMap from '../../utils/functions';
 
 type GlobalListProps = {
     myList: ListItem[],
@@ -69,7 +70,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
         setMessage(`${titleCase(product.name)} added to your Shopping List`);
     }
 
-    async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, product: product) {
+    async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, userId:number, product: product) {
         e.stopPropagation();
         const req = await fetch(`${API}/addToFavorites`, {
             method: "POST",
@@ -150,7 +151,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                             </div>
                             <div>
                                 <button onClick={(e) => addToMyList(e, product)}>Add to my list</button>
-                                {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
+                                {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
                             </div>
                         </div>
                         ))
@@ -170,12 +171,12 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                     <div>
                         <h3>{titleCase(product.name)}</h3>
                         <p>{titleCase(product.store)}</p>
-                        <p>Price: {product.price} {product.currency}</p>
+                        <p>Price: {product.price} {currencyMap(product.country)}</p>
                         <p>Category: {titleCase(product.category)}</p>
                     </div>
                     <div>
                         <button onClick={(e) => addToMyList(e, product)}>Add to my list</button>
-                        {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
+                        {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
                         <button onClick={(e) => deleteProduct(e, product.id)}>Delete Product</button>
                     </div>
                 </div>
@@ -195,7 +196,7 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
                         <img className={styles["card-img"]} src={itemDescription.image_url} alt={`Image of ${itemDescription.name}`} />
                     </div>
                     <p><strong>Store: </strong>{titleCase(itemDescription.store)}</p>
-                    <p><strong>Price: </strong>{itemDescription.price} {itemDescription.currency}</p>
+                    <p><strong>Price: </strong>{itemDescription.price} {currencyMap(itemDescription.country)}</p>
                     <p><strong>Category: </strong>{titleCase(itemDescription.category)}</p>
                     <div className={styles.desc}>
                         <strong>Description:</strong>

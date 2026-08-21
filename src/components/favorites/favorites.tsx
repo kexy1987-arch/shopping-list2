@@ -1,6 +1,6 @@
 import type { DbProduct, ListItem } from '../../utils/types'
 import styles from '../globalList/globalList.module.css'
-import { titleCase } from '../../utils/functions'
+import currencyMap, { titleCase } from '../../utils/functions'
 import { creatList } from '../../utils/functions'
 import { useEffect, useState } from 'react'
 import Modal from '../modal/modal'
@@ -89,7 +89,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
                     <div>
                         <h3>{titleCase(product.name)}</h3>
                         <p>{titleCase(product.store)}</p>
-                        <p>Price: {product.price} {product.currency}</p>
+                        <p>Price: {product.price} {currencyMap(product.country)}</p>
                         <p>Category: {titleCase(product.category)}</p>
                     </div>
                     <div>
