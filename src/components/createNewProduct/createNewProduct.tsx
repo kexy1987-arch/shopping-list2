@@ -1,7 +1,7 @@
 import styles from './createNewProduct.module.css'
 import React, { useEffect, useState, useRef } from "react"
 import Scanner from './scanner';
-import type { AzureOCRResponse, DbProduct } from '../../utils/types';
+import type { DbProduct } from '../../utils/types';
 import ScannerRes from '../ScannerResults/scannerRes';
 import CountrySelect from '../../components/countrySelect/countrySelect';
 import currencyMap from '../../utils/functions';
