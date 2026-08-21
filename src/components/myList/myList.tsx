@@ -130,6 +130,8 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
         
     }
 
+    
+
 
 
     useEffect(() => {
@@ -166,11 +168,37 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
             e.stopPropagation();
             delFav(userId, product.id);
         }
+
+    async function reset() {
+        
+        const notBought = myList.map(prevItem =>(
+                { ...prevItem, bought: false }
+            )
+        );
+
+        const req = await fetch(`${API}/buy`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                myList: notBought,
+                userId
+            })
+        })
+
+        const res = await req.json();
+        if (res.ok) {
+            getMyList(userId)
+        }
+        if (!res.ok) {
+            console.log(res.error);
+        }
+    }
     
     return(
         <div>
             <NotifBar message={notif} />
             <div className={styles.filter}>
+                <button onClick={() => reset()}>Reset List</button>
                 <label>Filter by store:
                     <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>
                         <option value="all">All</option>

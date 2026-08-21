@@ -140,6 +140,11 @@
   font-size: 1rem;
 }
 
+button{
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+}
+
 body {
   margin: 0;
 }
@@ -229,7 +234,7 @@ span button{
   box-sizing: border-box;
   transition: height 0.2s ease;
   overflow: hidden;
-  height: 10rem;
+  height: 11rem;
   @media (max-width: 440px) {
       height: 9rem;
       font-size: 0.6rem
