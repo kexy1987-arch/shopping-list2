@@ -21,6 +21,7 @@ type FavoritesProps = {
 export default function Favorites({favs, delFav, userId, myList, setMyList, updateList, getFavs}: FavoritesProps){
     const [ find, setFind ] = useState<DbProduct[] | undefined>(undefined);
     const [ message, setMessage ] = useState<string>("");
+    const [ itemDescription, setItemDescription] = useState<DbProduct | null>(null);
 
     useEffect(() => {
         getFavs(userId)
@@ -82,7 +83,7 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
             </div>
             
             {favs && favs.length !== 0 ? favs.map(product => (
-                <div key={product.id} className={styles["product-card"]}>
+                <div key={product.id} className={styles["product-card"]} onClick={() => setItemDescription(product)}>
                     <div className={styles["card-img-container"]}>
                         <img className={styles["card-img"]} src={product.image_url ? product.image_url : "/unknown_item.png"} alt={`Photo of ${product.name}`} />
                     </div>
@@ -100,6 +101,22 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
             ))
                 : 
                 <Modal message={<h2>No Favorites yet</h2>} />                
+            }
+            {itemDescription &&
+                <Modal message={<div className={styles["description-modal"]} onClick={() => setItemDescription(null)}>
+                    <h2>{itemDescription.name.toUpperCase()}</h2>
+                    <div className={styles["img-container"]}>
+                        <img className={styles["card-img"]} src={itemDescription.image_url} alt={`Image of ${itemDescription.name}`} />
+                    </div>
+                    <p><strong>Store: </strong>{titleCase(itemDescription.store)}</p>
+                    <p><strong>Price: </strong>{itemDescription.price} {currencyMap(itemDescription.country)}</p>
+                    <p><strong>Category: </strong>{titleCase(itemDescription.category)}</p>
+                    <div className={styles.desc}>
+                        <strong>Description:</strong>
+                        <p>{itemDescription.description}</p>
+                    </div>
+                    <p>Last update: {itemDescription.created_at}</p>
+                </div>} />
             }
         </div>
     )
