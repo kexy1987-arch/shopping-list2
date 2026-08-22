@@ -10,8 +10,8 @@
 
 .country{
     position: absolute;
-    bottom: 0rem;
-    left: 1rem;
-    z-index: 99999;
+    top: 0rem;
+    left: 0rem;
+    z-index: 99;
 
 }
