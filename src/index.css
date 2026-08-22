@@ -1,22 +1,30 @@
 :root {
-  --text: #6b6375;
+  /*
+  main color vars:
+  --home-sel-color
+  --home-sel-bg
+  --list-bg
+  */
+
+  --text: var(--home-sel-color);
   --text-h: #08060d;
-  --bg: rgb(255, 208, 0);
+  --bg: var(--list-bg);
   --border: #e5e4e7;
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-  --home-btn-shadow: 0 3px 10px rgb(229, 255, 0);
+ 
 
   /*home.module*/
   /*.btn*/
   --home-btn-color: #FFF; 
   --home-btn-bg: transparent(61, 61, 61, 0.808);
-  --home-btn-cont-bg: green;
+  --home-btn-cont-bg: var(--list-bg);
+  --home-btn-shadow: 0 3px 10px var(--home-sel-bg);
 
   /*.selected*/
-  --home-sel-shadow: 0 3px 10px greenyellow;
-  --home-sel-color: greenyellow;
-  --home-sel-bg : rgb(0, 196, 0);
+  --home-sel-shadow: 0 3px 10px rgb(255, 132, 224);
+  --home-sel-color: white;
+  --home-sel-bg : rgb(196, 0, 137);
 
   /*.btn: hover::after*/
   --home-after-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
@@ -48,11 +56,11 @@
 
   /*globalList.module*/
   /*.product-card*/
-  --p-card-bg: rgba(164, 247, 56, 0.781);
+  --p-card-bg: var(--list-bg);
   --p-card-text: black;
 
   /*.modal*/
-  --modal-bg: rgba(0, 132, 185, 0.822);
+  --modal-bg: var(--home-sel-bg);
   --modal-text: white;
 
   /*.description-modal*/
@@ -63,7 +71,7 @@
 
   /*myList.module*/
   /*.main*/
-  --list-bg: rgb(243, 243, 100);
+  --list-bg: rgb(241, 145, 138);
   --list-border: 0.5rem solid rgb(255, 255, 255);
 
   /*.filter>label>select>option*/
@@ -71,17 +79,21 @@
 
   /*scannerRes.module*/
   /*.modal*/
-  --scan-modal-bg: green;
+  --scan-modal-bg: var(--home-sel-bg);
 
   /*.product-card*/
   --scan-pcard-bg: rgba(255, 228, 196, 0.781);
   --scan-pcard-text: black;
 
   /*NotifBar*/
-    --notif-bg: rgba(0, 132, 185, 0.959);
+    --notif-bg: var(--list-bg);
     --notif-text: black;
     --notif-border: 3px double white;
-    --notif-shadow: 0 6px 20px 10px rgb(47, 144, 255);
+    --notif-shadow: 0 6px 20px 10px var(--home-sel-bg);
+
+  /*changeCountry.module*/
+  /*.country*/
+  --country-btn-bg: var(--home-btn-cont-bg);
 
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -109,7 +121,7 @@
 #root {
   width: 1126px;
   max-width: 100%;
-  min-width: 350px;
+  min-width: 380px;
   margin: 0 auto;
   text-align: center;
   border-inline: 1px solid var(--border);
@@ -127,6 +139,7 @@
 button{
   font-size: 1rem;
   padding: 0.25rem 0.5rem;
+  min-width: 2rem;
 }
 
 body {
@@ -137,7 +150,6 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
 }
 
 h1 {
@@ -157,6 +169,10 @@ h2 {
     
   }
 }
+
+h1, h2, h3{
+  color: var(--home-sel-bg) !important;
+}
 p {
   margin: 0;
   width: 100%;
@@ -167,6 +183,7 @@ button{
   margin: 1rem 1rem;
   border-radius: 10px;
   border: none;
+  background-color: var(--home-sel-bg);
 }
 
 .header {
@@ -225,18 +242,17 @@ span button{
   max-width: 600px;
   height: 4.2rem;
   margin: 0.5rem auto;
-  border-bottom: 2px solid rgba(128, 128, 128, 0.897);
+  border-bottom: 2px solid var(--home-sel-bg);
   padding: 0 0.5rem;
   box-sizing: border-box;
   transition: height 0.2s ease;
   overflow: hidden;
-
 }
 
 @media (max-width: 477px) {
   .my-product-card{
     font-size: 0.7rem
-  }  
+  }
 }
 
 .bought {

@@ -2,13 +2,16 @@
     background-color: var(--list-bg);
     border: var(--list-border);
     width: 80%;
+    min-width: 320px;
     margin: 0 auto;
     box-sizing: border-box;
     border-radius: 0.5rem;
+    box-shadow: 3px 3px 3px 2px var(--home-sel-bg);
 }
 
 .category{
     border-bottom: 4px double white;
+    font-size: 1.5rem;
 }
 
 .amount{
