@@ -54,19 +54,29 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
         setStores(res.stores)
     }
 
-    function increaseAmount( e: React.MouseEvent<HTMLButtonElement>, itemRef: ListItem ){
+    async function updateAmount( e: React.MouseEvent<HTMLButtonElement>, listItem: ListItem, delta: number ){
         e.stopPropagation();
-        if( !itemRef )return;
-        const updated = myList.map(item => item.id === itemRef.id ? {...item, amount: item.amount + 1} : item)
-        setMyList(updated)
+
+        const updated = myList.map(item => item.id === listItem.id ? { ...item, amount: item.amount + delta } : item)
+        
+        const req = await fetch(`${API}/increaseamount`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                listItem,
+                userId,
+                delta
+            })
+        })
+        const res = await req.json();
+        if ( res.ok ){
+            setMyList(updated)
+        }
+        if ( !res.ok ) {
+            console.log(res.message);
+        }
     }
 
-    function decreseAmount(e: React.MouseEvent<HTMLButtonElement>, itemRef: ListItem ){
-        e.stopPropagation()
-        if (!itemRef || itemRef.amount === 0) return;
-        const updated = myList.map(item => item.id === itemRef.id ? { ...item, amount: item.amount - 1 } : item)
-        setMyList(updated)
-    }
 
     function deleteItem(e: React.MouseEvent<HTMLButtonElement>, product: DbProduct){
         e.stopPropagation();
@@ -232,9 +242,8 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
                                     <p>Total price: {(product.price * item.amount!).toFixed(2)} {product.currency}</p>
                                 </div>
                                 <div>
-                                    {item && <button onClick={(e) => deleteItem(e, product)}>Remove</button>}
-                                    
-                                    <div>Amount: <br></br>{item && <span><button onClick={(e) => increaseAmount(e, item)}>+</button>{item.amount} pcs<button onClick={((e) => decreseAmount(e, item))}>-</button></span>}</div>
+                                    {item && <button onClick={(e) => deleteItem(e, product)}>Remove</button>}                                    
+                                    <div>Amount: <br></br>{item && <span><button onClick={(e) => updateAmount(e, item, 1)}>+</button>{item.amount} pcs<button onClick={((e) => updateAmount(e, item, -1))}>-</button></span>}</div>
                                 </div>
                             </div>
                         </div>

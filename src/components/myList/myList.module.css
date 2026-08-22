@@ -20,6 +20,10 @@
     box-shadow: var(--shadow);
 }
 
+.product-name h2 {
+    color: black;
+}
+
 @media (max-width: 440px) {
     .product-name h2{font-size: 13px;}
 }
