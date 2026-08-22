@@ -1,11 +1,11 @@
 :root {
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: rgb(0, 140, 255);
+  --bg: rgb(255, 208, 0);
   --border: #e5e4e7;
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-  --home-btn-shadow: 0 3px 10px blue;
+  --home-btn-shadow: 0 3px 10px rgb(229, 255, 0);
 
   /*home.module*/
   /*.btn*/
@@ -64,7 +64,7 @@
   /*myList.module*/
   /*.main*/
   --list-bg: rgb(243, 243, 100);
-  --list-border: 0.5rem dotted blue;
+  --list-border: 0.5rem solid rgb(255, 255, 255);
 
   /*.filter>label>select>option*/
   --f-option-bg: black;
@@ -118,6 +118,10 @@
   flex-direction: column;
   box-sizing: border-box;
   font-size: 1rem;
+  background-image: url('/shop_list_bg2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 button{
