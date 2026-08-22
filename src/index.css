@@ -219,7 +219,7 @@ span button{
 
 .my-product-card {
   max-width: 600px;
-  min-width: 420px;
+  min-width: fit-content;
   height: 4.2rem;
   margin: 0.5rem auto;
   border-bottom: 2px solid rgba(128, 128, 128, 0.897);
