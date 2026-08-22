@@ -1,9 +1,20 @@
-.btn{
+.btn-container{
+    display: flex;
     position: fixed;
-    right: -0.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%);
+    overflow: hidden;
+    border-radius: 2rem;
+    box-shadow: var(--home-btn-shadow);
+    background-color: var(--home-btn-cont-bg);
+    z-index: 100;
+}
+
+.btn{
+    margin: 0px;
+    width: 6.5rem;
+    border-radius: 0px;
     border: none;
     display: flex;
     justify-content: center;
@@ -12,9 +23,12 @@
     transition: transform 0.3s ease;
     color: var(--home-btn-color);
     font-weight: bolder;
-    font-size: 1.5rem;
-    background-color: var(--home-btn-bg);
-    box-shadow: var(--home-btn-shadow);
+    font-size: 1rem;
+    background-color: var(--home-btn-bg);    
+}
+
+.btn img{
+    width: 2rem;
 }
 
 .btn:hover{
@@ -24,31 +38,8 @@
 .selected{
     box-shadow: var(--home-sel-shadow);
     color: var(--home-sel-color);
-}
-
-.btn:hover::after{
-    position: absolute;
-    top: 50%;
-    transform: translate(-100%, -50%);
-    box-shadow: var(--home-after-shadow);
-    color: var(--home-after-color);
-    font-size: 14px;
-    font-weight: 600;
-    font-family: sans-serif;
-    background: var(--home-after-bg);
-    padding: 6px 10px;
-    border-radius: 6px;
-}
-
-.new-product-btn {
-    top: 1rem;
-}
-
-.global-list-btn {
-    top: 4rem;    
-}
-
-.favorites-btn {
-    top: 7rem;
+    background-color: var(--home-sel-bg);
+    transform: scale(1.2);
+    border-radius: 2rem;
 }
 

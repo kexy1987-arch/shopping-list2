@@ -41,7 +41,7 @@ export default function ChangeCountry({user, country, setCountry}: ChangeCountry
 
     return(
         <>
-            <button className={styles.country} onClick={() => setShowSelect(!showSelect)}>{country}</button>
+            <button className={styles.country} onClick={() => {setShowSelect(!showSelect); console.log("Click")}}>{country}</button>
             {showSelect && 
                 <div className={styles.modal}>
                     <h2>Change country</h2>

@@ -18,6 +18,7 @@ type MyListProps = {
 export default function MyList({ myList, getMyList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
+    const [grouped, setGrouped ] = useState<Record<string, DbProduct[] | undefined>>();
     const [currentStore, setCurrentStore] = useState<string>("all")
     const [stores, setStores] = useState<Stores[]>([]);
     const [price, setPrice] = useState<number>(0);
@@ -34,6 +35,12 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
         const res = await req.json();
 
         if ( res.ok ) {
+            const grouped = res.data.reduce((acc, item) => {
+                if (!acc[item.category]) acc[item.category] = [];
+                acc[item.category].push(item);
+                return acc;
+            }, {});
+            setGrouped(grouped);
             setMyListItems(res.data);
         }
 
@@ -205,51 +212,60 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
     }
     
     return(
-        <div>
+        <div className={styles.main}>
             <NotifBar message={notif} />
             <div className={styles.filter}>
-                <button onClick={() => reset()}>Reset List</button>
-                <label>Filter by store:
-                    <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>
-                        <option value="all">All</option>
-                        {stores.map(store => (
-                            <option key={store.store} value={store.store}>{store.store.toLocaleUpperCase()}</option>
-                        ))}
-                    </select>
-                </label>
-                <p>Total: {price.toFixed(2)}{myListItems[0] ? myListItems[0].currency : ""}</p>
+                <img className={styles.reset} src="/Reload.svg" alt="reset button" onClick={() => reset()} />
+                <div>
+                    <label>Filter by store:
+                        <select onChange={(e) => setCurrentStore(e.target.value)} name="filter-select" autoComplete='off'>
+                            <option value="all">All</option>
+                            {stores.map(store => (
+                                <option key={store.store} value={store.store}>{store.store.toLocaleUpperCase()}</option>
+                            ))}
+                        </select>
+                    </label>
+                    <p>Total: {price.toFixed(2)}{myListItems && currencyMap(myListItems[0].country)}</p>
+                </div>
+                <div></div>
             </div>
-            <div className="list-container">
-                {myListItems && myList.map((item) => {
-                    const product = myListItems.find(p => p.id === item.id)
-                    if (!product) return null;
-                    return (
-                        <div key={item.id} id={`item-${item.id}`} className={`my-product-card ${item.bought ? "bought" : "notbought"}`} onClick={() => buy(item!)}>
-                            <div className={styles["product-name"]}>
-                                {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
-                            <h2>{titleCase(product.name)}</h2>
-                            <div></div>
-                            </div>
-                            
-                            <div className={styles["product-info-container"]}>
-                                <div className={styles["img-container"]}>
-                                    <img src={product.image_url ? product.image_url : "/unknown_item.png"} alt={`Photo of ${product.name}`} />
-                                </div>
-                                <div className={styles["product-info"]}>                                    
-                                    <div className={styles["info-lines"]}><p>Store:</p> <span>{product.store.toLocaleUpperCase()}</span></div>
-                                    <div className={styles["info-lines"]}><p>Category: </p> <span>{titleCase(product.category)}</span></div>
-                                    <div className={styles["info-lines"]}><p>Unit Price: </p><span>{product.price} {currencyMap(product.country)}</span></div>                                    
-                                    <p>Total price: {(product.price * item.amount!).toFixed(2)} {product.currency}</p>
-                                </div>
-                                <div>
-                                    {item && <button onClick={(e) => deleteItem(e, product)}>Remove</button>}                                    
-                                    <div>Amount: <br></br>{item && <span><button onClick={(e) => updateAmount(e, item, 1)}>+</button>{item.amount} pcs<button onClick={((e) => updateAmount(e, item, -1))}>-</button></span>}</div>
-                                </div>
-                            </div>
+            {<div>
+                {grouped && Object.entries(grouped).map(([category, products]) => (
+                    <div key={category}>
+                        <h2 className={styles.category}>{titleCase(category)}</h2>
+                        <div>
+                            {products!.map(product => {
+                                const item = myList.find(i => i.id === product.id);
+                                if (!item) return null;
+
+                                return (
+                                    <div key={item.id} id={`item-${item.id}`} className={`my-product-card ${item.bought ? "bought" : "notbought"}`} onClick={() => buy(item!)}>
+                                        <div className={styles["product-card"]}>
+                                            <div className={styles.flex}>                                            
+                                                {!favs?.find(fav => fav.id === product.id) ? <button className="fav-btn" onClick={(e) => addToFavorites(e, userId, product)}><img src="/Favorite.svg" /></button> : <button className="fav-btn" onClick={(e) => delFavorite(e, product)}><img src="/FavoriteFilled.svg" /></button>}
+                                                <h2>{product.store.toLocaleUpperCase()} {titleCase(product.name)}</h2>
+                                                <div className={styles.amount}>{item.amount}x</div>
+                                            </div>                                            
+                                            <div className={styles.flex}>
+                                                <div>
+                                                    {product.price} x {item.amount}
+                                                </div>
+                                                <div>
+                                                    {(product.price * item.amount!).toFixed(2)}{currencyMap(product.country)}
+                                                </div>
+                                                <div>
+                                                    {item && <span><button onClick={(e) => updateAmount(e, item, 1)}>+</button><button onClick={((e) => updateAmount(e, item, -1))}>-</button></span>}
+                                                    {item && <button onClick={(e) => deleteItem(e, product)}>X</button>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
-                    )
-                })}
-            </div>                       
+                    </div>
+                    ))}
+                </div>}                       
         </div>
     )
 }
