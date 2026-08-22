@@ -7,6 +7,7 @@ import CountrySelect from '../../components/countrySelect/countrySelect';
 import currencyMap from '../../utils/functions';
 import NotifBar from '../notifbar/notifbar';
 import Modal from '../modal/modal';
+import { catList } from '../../utils/catlist';
 
 
 
@@ -25,7 +26,7 @@ export default function CreateNewProduct(){
     const [barcode, setBarcode] = useState<string | null>("");
     const nameRef = useRef<HTMLInputElement>(null);
     const priceRef = useRef<HTMLInputElement>(null);
-    const categoryRef = useRef<HTMLInputElement>(null);
+    const categoryRef = useRef<HTMLSelectElement>(null);
     const storeRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const [ country, setCountry ] = useState<string>("");
@@ -63,7 +64,7 @@ export default function CreateNewProduct(){
         })
     }
 
-    function handleInputs(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>){
+    function handleInputs( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> ){
         setFormData({
             ...formData,
             [e.target.name]: e.target.value.toLocaleLowerCase()
@@ -255,7 +256,14 @@ export default function CreateNewProduct(){
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="category">Product category:</label>
-                    <input onKeyDown={(e) => onEnter(e)} ref={categoryRef} type="text" id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)} />
+                    <select ref={categoryRef} id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)}>
+                        <option></option>
+                        {catList.map(cat => (
+                            <>
+                                <option value={cat}>{cat}</option>
+                            </>
+                        ))}
+                    </select>
                 </div>
                 <div className={styles["input-container"]}>
                     <label htmlFor="store">Store:</label>
