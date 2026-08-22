@@ -225,7 +225,7 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
                             ))}
                         </select>
                     </label>
-                    <p>Total: {price.toFixed(2)}{myListItems && currencyMap(myListItems[0].country)}</p>
+                    <p>Total: {price.toFixed(2)}{myListItems[0] ? currencyMap(myListItems[0].country) : ""}</p>
                 </div>
                 <div></div>
             </div>
