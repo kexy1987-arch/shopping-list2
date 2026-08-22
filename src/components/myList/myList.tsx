@@ -35,7 +35,7 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
         const res = await req.json();
 
         if ( res.ok ) {
-            const grouped = res.data.reduce((acc, item) => {
+            const grouped = res.data.reduce((acc:Record<string, DbProduct[]>, item: DbProduct) => {
                 if (!acc[item.category]) acc[item.category] = [];
                 acc[item.category].push(item);
                 return acc;
