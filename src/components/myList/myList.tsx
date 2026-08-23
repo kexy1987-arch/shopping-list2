@@ -133,6 +133,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
 
         const res = await req.json();
         if(res.ok){
+            wsRef.current?.send(JSON.stringify(userId))
             getMyList(userId);
         }
         if(!res.ok){
@@ -205,6 +206,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
 
         const res = await req.json();
         if (res.ok) {
+            wsRef.current?.send(JSON.stringify(userId))
             getMyList(userId)
         }
         if (!res.ok) {
