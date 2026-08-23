@@ -53,7 +53,7 @@
   --home-sel-bg : var(--theme-bg-color);
 
   /*.btn: hover::after*/
-  --home-after-shadow: 0 2px 6px 5px var(var(--theme-shadow2));
+  --home-after-shadow: 0 2px 6px 5px var(--theme-shadow2);
   --home-after-color: var(--theme-text-color);
   --home-after-bg: var(--theme-text2-color);
   
