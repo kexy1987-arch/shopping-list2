@@ -50,8 +50,8 @@ export default function Login({setToken, setUser}:LoginProps){
     }
 
     return(
-        <>
-            <form>
+        <div className={styles.main}>
+            <form className={styles.form}>
                 <fieldset className={styles.login}>
                     <legend>Login</legend>
                     <label htmlFor="email">Email</label>
@@ -62,6 +62,6 @@ export default function Login({setToken, setUser}:LoginProps){
                 <p><Link to="/newaccount">New Account</Link></p>
                 <button onClick={(e) => handleLogin(e)} type="submit">Log in</button>
             </form>
-        </>
+        </div>
     )
 }

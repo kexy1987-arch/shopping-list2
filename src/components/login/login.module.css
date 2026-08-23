@@ -4,3 +4,21 @@
     width: 20rem;
     margin: 2rem auto;
 }
+
+.form{
+    background-color: rgba(255, 255, 255, 0.5);
+    width: fit-content;
+    margin: 2rem auto;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: black;
+    box-shadow: -25px 22px 30px 10px rgba(102, 90, 21, 0.6);
+}
+
+.main {
+    background: url('/login-bg.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
