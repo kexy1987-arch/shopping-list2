@@ -163,7 +163,7 @@ export default function MyList({ myList, wsRef, getMyList, updateList, userId, f
 
     useEffect(() => {
         calcPrice()
-    }, [myListItems])
+    }, [myListItems, myList])
 
     async function addToFavorites(e: React.MouseEvent<HTMLButtonElement>, userId: number, product: DbProduct) {
         e.stopPropagation();
