@@ -260,7 +260,7 @@ export default function CreateNewProduct(){
                         <option></option>
                         {catList.map(cat => (
                             <>
-                                <option value={cat}>{cat}</option>
+                                <option key={cat} value={cat}>{cat}</option>
                             </>
                         ))}
                     </select>

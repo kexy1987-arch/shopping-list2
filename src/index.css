@@ -1,43 +1,69 @@
 :root {
-  /*
-  main color vars:
-  --home-sel-color
-  --home-sel-bg
-  --list-bg
-  */
 
-  --text: var(--home-sel-color);
-  --text-h: #08060d;
+  --theme1-color: white;
+  --theme1-bg-color: rgb(196, 0, 137);
+  --theme1-main-color: rgb(241, 145, 138);
+  --theme1-text-color: white;
+  --theme1-text2-color: black;
+  --theme1-border-color: white;
+  --theme1-shadow1: rgb(255, 132, 224);
+  --theme1-shadow2: rgb(196, 0, 137);
+  --theme1-bg-image: url('/shop_list_bg1.png');
+
+  --theme2-color: white;
+  --theme2-bg-color: rgb(119, 44, 0);
+  --theme2-main-color: rgb(196, 135, 66);
+  --theme2-text-color: rgb(252, 247, 0);
+  --theme2-text2-color: black;
+  --theme2-border-color: rgb(255, 196, 0);
+  --theme2-shadow1: rgb(255, 255, 255);
+  --theme2-shadow2: rgb(255, 217, 0);
+  --theme2-bg-image: url('/shop_list_bg2.png');
+
+
+  --theme-color: var(--theme2-color);
+  --theme-bg-color: var(--theme2-bg-color);
+  --theme-main-color: var(--theme2-main-color);
+  --theme-text-color: var(--theme2-text-color);
+  --theme-text2-color: var(--theme2-text2-color);
+  --theme-border-color: var(--theme2-border-color);
+  --theme-shadow1: var(--theme2-shadow1);
+  --theme-shadow2: var(--theme2-shadow2);
+  --theme-bg-image: var(--theme2-bg-image);
+  
+
+  --text: var(--theme-text-color);
+  --text-h: var(--theme-text2-color);
   --bg: var(--list-bg);
-  --border: #e5e4e7;
+  --border: var(--theme-border-color);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
  
 
   /*home.module*/
   /*.btn*/
-  --home-btn-color: #FFF; 
+  --home-btn-color: var(--theme-text-color); 
   --home-btn-bg: transparent(61, 61, 61, 0.808);
-  --home-btn-cont-bg: var(--list-bg);
-  --home-btn-shadow: 0 3px 10px var(--home-sel-bg);
+  --home-btn-cont-bg: var(--theme-main-color);
+  --home-btn-shadow: 0 3px 10px var(--theme-shadow2);
 
   /*.selected*/
-  --home-sel-shadow: 0 3px 10px rgb(255, 132, 224);
-  --home-sel-color: white;
-  --home-sel-bg : rgb(196, 0, 137);
+  --home-sel-shadow: 0 3px 10px var(--theme-shadow-color);
+  --home-sel-color: var(--theme-color);
+  --home-sel-bg : var(--theme-bg-color);
 
   /*.btn: hover::after*/
-  --home-after-shadow: 0 2px 6px 5px rgba(0, 26, 255, 0.2);
-  --home-after-color: white;
-  --home-after-bg: blacks;
+  --home-after-shadow: 0 2px 6px 5px var(var(--theme-shadow2));
+  --home-after-color: var(--theme-text-color);
+  --home-after-bg: var(--theme-text2-color);
   
   /*countrySelect.module*/
   /*.res*/
-  --cs-bg: antiquewhite;
-  --cs-text-color: black;
-  --cs-border: 1px solid black;
+  --cs-bg: var(--theme-bg-color);
+  --cs-text-color: var(--theme-text2-color);
+  --cs-border: 1px solid var(--theme-border-color);
   /*.res p:hover*/
-  --cs-p-bg: white;
+  --cs-p-bg: var(--theme-bg-color);
 
   /*newAccount.module*/
   /*-----------------*/
@@ -45,55 +71,55 @@
   /*createNewProduct.module*/
   /*.description-image-btn*/
   --desc-btn-border: none;
-  --desc-btn-bg: gray;
-  --desc-btn-color: white;
+  --desc-btn-bg: var(--theme-bg-color);
+  --desc-btn-color: var(--theme-text-color);
   /*.scanner*/
-  --scanner-bg: white;
+  --scanner-bg: var(--theme-main-color);
 
   /*favorites.module*/
   /*.modal*/
-  --fav-bg: rgba(137, 43, 226, 0.712);
+  --fav-bg: var(--theme-bg-color);
 
   /*globalList.module*/
   /*.product-card*/
-  --p-card-bg: var(--list-bg);
-  --p-card-text: black;
+  --p-card-bg: var(--theme-main-color);
+  --p-card-text: var(--theme-text2-color);
 
   /*.modal*/
-  --modal-bg: var(--home-sel-bg);
-  --modal-text: white;
+  --modal-bg: var(--theme-bg-color);
+  --modal-text: var(--theme-text-color);
 
   /*.description-modal*/
-  --desc-modal-bg: rgba(0, 0, 0, 0.884);
+  --desc-modal-bg: var(--theme-main-color);
 
   /*.found*/
-  --found-bg: antiquewhite;
+  --found-bg: var(--theme-main-color);
 
   /*myList.module*/
   /*.main*/
-  --list-bg: rgb(241, 145, 138);
-  --list-border: 0.5rem solid rgb(255, 255, 255);
+  --list-bg: var(--theme-main-color);
+  --list-border: 0.5rem solid var(--theme-border-color);
 
   /*.filter>label>select>option*/
-  --f-option-bg: black;
+  --f-option-bg: var(--theme-text2-color);
 
   /*scannerRes.module*/
   /*.modal*/
-  --scan-modal-bg: var(--home-sel-bg);
+  --scan-modal-bg: var(--theme-main-color);
 
   /*.product-card*/
-  --scan-pcard-bg: rgba(255, 228, 196, 0.781);
-  --scan-pcard-text: black;
+  --scan-pcard-bg: var(--theme-bg-color);
+  --scan-pcard-text: var(--theme-color);
 
   /*NotifBar*/
-    --notif-bg: var(--list-bg);
-    --notif-text: black;
-    --notif-border: 3px double white;
-    --notif-shadow: 0 6px 20px 10px var(--home-sel-bg);
+    --notif-bg: var(--theme-bg-color);
+    --notif-text: var(--theme-text-color);
+    --notif-border: 3px double var(--theme-border-color);
+    --notif-shadow: 0 6px 20px 10px var(--theme-main-color);
 
   /*changeCountry.module*/
   /*.country*/
-  --country-btn-bg: var(--home-btn-cont-bg);
+  --country-btn-bg: var(--theme-main-color);
 
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -130,7 +156,7 @@
   flex-direction: column;
   box-sizing: border-box;
   font-size: 1rem;
-  background-image: url('/shop_list_bg2.png');
+  background-image: var(--theme-bg-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

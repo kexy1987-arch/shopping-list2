@@ -21,7 +21,7 @@
     align-items: center;
     z-index: 999;
     transition: transform 0.3s ease;
-    color: var(--home-btn-color);
+    color: white;
     font-weight: bolder;
     font-size: 1rem;
     background-color: var(--home-btn-bg);    
@@ -37,7 +37,7 @@
 
 .selected{
     box-shadow: var(--home-sel-shadow);
-    color: var(--home-sel-color);
+    color: var(--home-btn-color);
     background-color: var(--home-sel-bg);
     transform: scale(1.2);
     border-radius: 2rem;
