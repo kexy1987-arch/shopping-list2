@@ -154,6 +154,7 @@
   text-align: center;
   border-inline: 1px solid var(--border);
   min-height: 100dvh;
+  height: calc(100dvh + env(safe-area-inset-top) + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -162,6 +163,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom)
 }
 
 button{
