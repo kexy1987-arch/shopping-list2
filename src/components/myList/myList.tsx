@@ -210,6 +210,21 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
             console.log(res.error);
         }
     }
+
+    /*
+    useEffect(() => {
+      const ws = new WebSocket(`wss://your-domain/ws/my-list?user_id=${userId}`);
+    
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log("List update:", data);
+        setMyList(data.data);
+      };
+    
+      return () => ws.close();
+    }, [userId]);
+
+    */
     
     return(
         <div className={styles.main}>

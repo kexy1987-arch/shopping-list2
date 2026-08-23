@@ -44,3 +44,12 @@ export type DbProduct = {
 export type Stores = {
     store: string
 }
+
+export type AppType = {
+    ws: {
+        $ws: {
+            input: any;
+            output: any;
+        };
+    };
+};

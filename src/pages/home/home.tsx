@@ -7,6 +7,8 @@ import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
+import { hc } from 'hono/client'
+import type app from './server'
 
 
 type HomeProps = {
@@ -23,6 +25,23 @@ function Home({user}:HomeProps) {
 
   const btnRef = useRef<HTMLButtonElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+      const client = hc<typeof app>(`${API}/ws/my-list`);
+      const ws = client.ws.$ws(0);
+
+      ws.addEventListener("open", () => {
+        ws.send(user.id)
+      })
+
+      ws.addEventListener("message", (event: MessageEvent) => {
+        const { data } = JSON.parse(event.data);
+        const list = JSON.parse(data);
+        setMyList(list);
+      });    
+  }, [user.id])
+
+  
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -72,6 +91,7 @@ function Home({user}:HomeProps) {
     }
   }
 
+  
   async function getMyList(userId: number){
     const req = await fetch(`${API}/my-list`, {
       method: "POST",
@@ -81,7 +101,6 @@ function Home({user}:HomeProps) {
     const res = await req.json();
 
     if(res.ok){
-      console.log("MYLIST")
       const list = JSON.parse(res.data.list)
       if(!list)return
       setMyList(list);
@@ -91,6 +110,8 @@ function Home({user}:HomeProps) {
       console.log("MY_LIST", res.message)
     }
   }
+
+  
 
   async function updateList(userId: number, myList: ListItem[]) {
     if(!Array.isArray(myList)) return;
@@ -152,9 +173,9 @@ function Home({user}:HomeProps) {
     }
   }
 
-  useEffect(() => { 
-    getMyList(user.id);
-  }, [])
+//useEffect(() => { 
+//  getMyList(user.id);
+//}, [])
 
 
   return (
