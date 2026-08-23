@@ -5,7 +5,6 @@ import type { DbProduct, ListItem, product} from '../../utils/types';
 import Scanner from '../createNewProduct/scanner';
 import ItemFound from './itemFound';
 import Modal from '../modal/modal';
-import NotifBar from '../notifbar/notifbar';
 import currencyMap from '../../utils/functions';
 
 type GlobalListProps = {
@@ -17,9 +16,10 @@ type GlobalListProps = {
     delFav: (userId: number, productId: number) => void;
     updateList: (userId: number, myList: ListItem[]) => void,
     country: string,
+    setMessage: (val: string) => void;
 }
 
-export default function GlobalList({myList, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
+export default function GlobalList({myList, setMessage, setMyList, updateList, userId, getFavs, favs, delFav, country}:GlobalListProps){
     const API = import.meta.env.VITE_WORKER_API
     const [ list, setList ] = useState<product[] | null>(null);
     const [ itemFound, setItemFound ] = useState<product[] | null>(null);
@@ -27,7 +27,6 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
     const [ barcode, setBarcode ] = useState<string | null>("");
     const [ itemDescription, setItemDescription ] = useState<product | null>(null);
     const [ find, setFind ] = useState<product[] | undefined>(undefined);
-    const [ message, setMessage ] = useState<string>("");
 
     async function getProducts() {
         const res = await fetch(`${API}/get-products`, {
@@ -129,7 +128,6 @@ export default function GlobalList({myList, setMyList, updateList, userId, getFa
 
     return(
         <div className='z-index'>
-            <NotifBar message={message} />
             <header className="header">
                 <h2 className='fixed'>Global Product List</h2>
             </header>

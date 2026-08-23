@@ -2,7 +2,6 @@ import styles from './myList.module.css'
 import type { DbProduct, ListItem, Stores } from '../../utils/types'
 import { useState, useEffect } from 'react';
 import currencyMap, { titleCase } from '../../utils/functions';
-import NotifBar from '../notifbar/notifbar';
 
 type MyListProps = {
     myList: ListItem[],
@@ -13,17 +12,17 @@ type MyListProps = {
     favs: DbProduct[] | null;
     delFav: (userId: number, productId: number) => void;
     getMyList: (value: number) => void,
-    wsRef: React.RefObject<WebSocket | null>
+    wsRef: React.RefObject<WebSocket | null>;
+    setMessage: (val: string) => void;
 }
 
-export default function MyList({ myList, wsRef, getMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
+export default function MyList({ myList, setMessage, wsRef, getMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [grouped, setGrouped ] = useState<Record<string, DbProduct[] | undefined>>();
     const [currentStore, setCurrentStore] = useState<string>("all")
     const [stores, setStores] = useState<Stores[]>([]);
     const [price, setPrice] = useState<number>(0);
-    const [notif, setNotif] = useState<string>("");
 
 
     async function getMyListItems(myList: ListItem[]) {
@@ -90,7 +89,7 @@ export default function MyList({ myList, wsRef, getMyList, updateList, userId, f
         wsRef.current?.send(JSON.stringify(userId))
         if(myList.length <= 1)setPrice(0);
         updateList(userId, updated);
-        setNotif(`${titleCase(product.name)} removed from your list.`)
+        setMessage(`${titleCase(product.name)} removed from your list.`)
     }
 
     function calcPrice(){
@@ -216,7 +215,6 @@ export default function MyList({ myList, wsRef, getMyList, updateList, userId, f
     
     return(
         <div className={styles.main}>
-            <NotifBar message={notif} />
             <div className={styles.filter}>
                 <img className={styles.reset} src="/Reload.svg" alt="reset button" onClick={() => reset()} />
                 <div>

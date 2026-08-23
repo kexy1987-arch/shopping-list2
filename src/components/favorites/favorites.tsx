@@ -4,7 +4,6 @@ import currencyMap, { titleCase } from '../../utils/functions'
 import { creatList } from '../../utils/functions'
 import { useEffect, useState } from 'react'
 import Modal from '../modal/modal'
-import NotifBar from '../notifbar/notifbar'
 
 
 
@@ -16,11 +15,11 @@ type FavoritesProps = {
     setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
     updateList: (userId: number, myList: ListItem[]) => void,
     getFavs: (value: number) => void;
+    setMessage: (val: string) => void;
 }
 
-export default function Favorites({favs, delFav, userId, myList, setMyList, updateList, getFavs}: FavoritesProps){
+export default function Favorites({favs, setMessage, delFav, userId, myList, setMyList, updateList, getFavs}: FavoritesProps){
     const [ find, setFind ] = useState<DbProduct[] | undefined>(undefined);
-    const [ message, setMessage ] = useState<string>("");
     const [ itemDescription, setItemDescription] = useState<DbProduct | null>(null);
 
     useEffect(() => {
@@ -52,7 +51,6 @@ export default function Favorites({favs, delFav, userId, myList, setMyList, upda
 
     return(
         <div className='z-index vh'>
-            <NotifBar message={message}/>
             <header className="header">
                 <h2 className='fixed'>Favorites</h2>
             </header>

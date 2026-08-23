@@ -7,6 +7,7 @@ import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
+import NotifBar from '../../components/notifbar/notifbar';
 
 
 type HomeProps = {
@@ -20,6 +21,7 @@ function Home({user}:HomeProps) {
   const [ favs, setFavs ] = useState<DbProduct[] | null>(null);
   const [ country, setCountry ] = useState<string>(user.country);
   const [ showSettings, setShowSetting ] = useState<boolean>(false);
+  const [ message, setMessage ] = useState<string>("");
 
   const btnRef = useRef<HTMLButtonElement>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -183,6 +185,7 @@ function Home({user}:HomeProps) {
 
   return (
     <>
+      <NotifBar message={message} />
       <h1>Shopping List</h1>
       <div className={styles.settings}>
         <button ref={btnRef} onClick={() => setShowSetting(!showSettings)}>setting</button>
@@ -199,10 +202,10 @@ function Home({user}:HomeProps) {
           </label>
         </div>}
       </div>            
-      {!activePanel && <MyList wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} updateList={updateList} userId={user.id} />}
+      {!activePanel && <MyList setMessage={setMessage} wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} updateList={updateList} userId={user.id} />}
       {activePanel === "create" && <CreateNewProduct />}
-      {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country} />}
-      {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs} />}
+      {activePanel === "global-list" && <GlobalList setMessage={setMessage} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country} />}
+      {activePanel === "favorites" && <Favorites setMessage={setMessage} favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs} />}
       
       <div className={styles["btn-container"]}>
         <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "create")}>{activePanel === "create" ? "x": "New Product"}</button>        
