@@ -178,6 +178,7 @@ export default function MyList({ myList, wsRef, getMyList, updateList, userId, f
         if (res.ok) {
             console.log(res.message)
             getFavs(userId)
+            wsRef.current?.send(JSON.stringify(userId))
         } else {
             console.log(res.error)
         }
@@ -186,6 +187,7 @@ export default function MyList({ myList, wsRef, getMyList, updateList, userId, f
     function delFavorite (e: React.MouseEvent<HTMLButtonElement>, product: DbProduct) {
             e.stopPropagation();
             delFav(userId, product.id);
+            wsRef.current?.send(JSON.stringify(userId))
         }
 
     async function reset() {
