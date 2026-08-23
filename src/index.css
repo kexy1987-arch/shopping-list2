@@ -137,6 +137,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 
   @media (max-width: 1024px) {
     font-size: 16px;
@@ -145,8 +150,7 @@
 
 
 #root {
-  position: fixed;
-  inset: 0;
+  
   width: 1126px;
   max-width: 100%;
   min-width: 380px;
@@ -154,7 +158,7 @@
   text-align: center;
   border-inline: 1px solid var(--border);
   min-height: 100dvh;
-  height: 100dvh;
+  
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -163,8 +167,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom)
+  
 }
 
 button{
