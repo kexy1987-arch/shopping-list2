@@ -154,7 +154,6 @@ function Home({user}:HomeProps) {
 
   useEffect(() => { 
     getMyList(user.id);
-    console.log(user) 
   }, [])
 
 
