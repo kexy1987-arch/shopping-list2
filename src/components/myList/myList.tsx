@@ -90,7 +90,6 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
         e.stopPropagation();
         const updated = myList.filter(item => item.id !== product.id);
         setMyList(updated);
-        wsRef.current?.send(String(userId))
         if(myList.length <= 1)setPrice(0);
         updateList(userId, updated);
         setNotif(`${titleCase(product.name)} removed from your list.`)

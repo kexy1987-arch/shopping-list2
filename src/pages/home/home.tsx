@@ -27,21 +27,25 @@ function Home({user}:HomeProps) {
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-      const client = hc(`${API}/ws/my-list`);
-      const ws = client.ws.$ws(0);
+    const ws = new WebSocket(`${API}/ws/my-list/ws?userId=${user.id}`);
 
-      wsRef.current = ws;
+    wsRef.current = ws;
 
-      ws.addEventListener("open", () => {
-        ws.send(String(user.id))
-      })
+    ws.addEventListener("open", () => {
+      console.log("Ws connected");
+      ws.send(JSON.stringify(user.id))
+    })
+    
+    ws.addEventListener("message", (event: MessageEvent) => {
+      const { data } = JSON.parse(event.data);
+      const list = JSON.parse(data);
+      console.log("ws:", list)
+      setMyList(list);
+    });
 
-      ws.addEventListener("message", (event: MessageEvent) => {
-        console.log("HI from ws")
-        const { data } = JSON.parse(event.data);
-        const list = JSON.parse(data);
-        setMyList(list);
-      });
+    ws.addEventListener("close", () => {
+      console.log("Ws closed");
+    })
   }, [user.id])
 
   
