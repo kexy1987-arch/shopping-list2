@@ -79,6 +79,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
         const res = await req.json();
         if ( res.ok ){
             setMyList(updated)
+            wsRef.current?.send(JSON.stringify(userId))
         }
         if ( !res.ok ) {
             console.log(res.message);
