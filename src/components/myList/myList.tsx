@@ -25,8 +25,6 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
     const [price, setPrice] = useState<number>(0);
     const [notif, setNotif] = useState<string>("");
 
-    console.log(getMyList)
-
 
     async function getMyListItems(myList: ListItem[]) {
         const idList = myList.map(item => item.id)
@@ -92,6 +90,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
         e.stopPropagation();
         const updated = myList.filter(item => item.id !== product.id);
         setMyList(updated);
+        wsRef.current?.send(String(userId))
         if(myList.length <= 1)setPrice(0);
         updateList(userId, updated);
         setNotif(`${titleCase(product.name)} removed from your list.`)
@@ -135,8 +134,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
 
         const res = await req.json();
         if(res.ok){
-            //getMyList(userId)
-            wsRef.current?.send(String(userId));
+            getMyList(userId);
         }
         if(!res.ok){
             console.log(res.error);
@@ -208,8 +206,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
 
         const res = await req.json();
         if (res.ok) {
-        //    getMyList(userId)
-            wsRef.current?.send(String(userId));
+            getMyList(userId)
         }
         if (!res.ok) {
             console.log(res.error);

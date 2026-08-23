@@ -37,15 +37,11 @@ function Home({user}:HomeProps) {
       })
 
       ws.addEventListener("message", (event: MessageEvent) => {
+        console.log("HI from ws")
         const { data } = JSON.parse(event.data);
         const list = JSON.parse(data);
         setMyList(list);
-      });   
-      
-    return () => {
-      ws.close();
-      wsRef.current = null;
-    };
+      });
   }, [user.id])
 
   
@@ -134,6 +130,7 @@ function Home({user}:HomeProps) {
       const res = await req.json()
       if (res.ok) {
         console.log(res.message)
+        wsRef.current?.send(String(userId));
       }
     } catch (error){
       console.log("UPDATE_LIST", error)
@@ -179,10 +176,6 @@ function Home({user}:HomeProps) {
       loadTheme(num);
     }
   }
-
-//useEffect(() => { 
-//  getMyList(user.id);
-//}, [])
 
 
   return (
