@@ -167,10 +167,10 @@ function Home({user}:HomeProps) {
             <ChangeCountry user={user} country={country} setCountry={setCountry} />
           </label>          
           <label>Theme: 
-            <select onChange={(e) => setTheme(e)}>
+            <select className={styles["theme-sel"]} onChange={(e) => setTheme(e)}>
               <option value={0}></option>
-              <option value={1}>Theme 1</option>
-              <option value={2}>Theme 2</option>
+              <option className={styles.theme1} value={1}>Theme 1</option>
+              <option className={styles.theme2} value={2}>Theme 2</option>
             </select>
           </label>
         </div>}

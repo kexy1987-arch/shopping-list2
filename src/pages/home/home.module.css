@@ -67,3 +67,24 @@
     border: 1px solid var(--theme-border-color);
     box-shadow: 4px 4px 10px var(--theme-shadow2);
 }
+
+.settings-container label{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: left;
+}
+
+.theme-sel{
+    background-color: var(--theme-main-color);
+}
+
+.theme1{
+    background-color: var(--theme1-main-color);
+    color: var(--theme1-text-color)
+}
+
+.theme2{
+    background-color: var(--theme2-main-color);
+    color: var(--theme2-text-color)
+}
