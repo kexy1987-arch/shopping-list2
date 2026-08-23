@@ -8,7 +8,6 @@ import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
 import { hc } from 'hono/client'
-import type app from './server'
 
 
 type HomeProps = {
@@ -27,11 +26,11 @@ function Home({user}:HomeProps) {
   const settingsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-      const client = hc<typeof app>(`${API}/ws/my-list`);
+      const client = hc(`${API}/ws/my-list`);
       const ws = client.ws.$ws(0);
 
       ws.addEventListener("open", () => {
-        ws.send(user.id)
+        ws.send(String(user.id))
       })
 
       ws.addEventListener("message", (event: MessageEvent) => {
