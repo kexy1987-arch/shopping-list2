@@ -7,7 +7,6 @@ import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
-import { hc } from 'hono/client'
 
 
 type HomeProps = {
