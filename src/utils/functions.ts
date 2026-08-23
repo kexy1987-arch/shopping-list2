@@ -224,3 +224,15 @@ export default function currencyMap(country: string) {
     return countryCurrency[country];
 }
 
+export function loadTheme(num: number) {
+    const theme = document.documentElement.style;
+    theme.setProperty('--theme-color', `var(--theme${num}-color)`);
+    theme.setProperty('--theme-bg-color', `var(--theme${num}-bg-color)`);
+    theme.setProperty('--theme-main-color', `var(--theme${num}-main-color)`);
+    theme.setProperty('--theme-text-color', `var(--theme${num}-text-color)`);
+    theme.setProperty('--theme-text2-color', `var(--theme${num}-text2-color)`);
+    theme.setProperty('--theme-border-color', `var(--theme${num}-border-color)`);
+    theme.setProperty('--theme-shadow1', `var(--theme${num}-shadow1)`);
+    theme.setProperty('--theme-shadow2', `var(--theme${num}-shadow2)`);
+    theme.setProperty('--theme-bg-image', `var(--theme${num}-bg-image)`);
+}

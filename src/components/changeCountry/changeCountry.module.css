@@ -1,7 +1,7 @@
 .modal{
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 100%;
+    left: 70%;
     min-width: 300px;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.822);
@@ -16,10 +16,6 @@
 }
 
 .country{
-    position: absolute;
-    top: 0rem;
-    left: 0rem;
-    z-index: 99;
     border-radius: 3rem;
     background-color: var(--country-btn-bg);
 }

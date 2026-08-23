@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import CreateNewProduct from '../../components/createNewProduct/createNewProduct';
 import GlobalList from '../../components/globalList/globalList';
 import MyList from '../../components/myList/myList';
@@ -6,6 +6,7 @@ import Favorites from '../../components/favorites/favorites';
 import styles from './home.module.css'
 import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
+import { loadTheme } from '../../utils/functions';
 
 
 type HomeProps = {
@@ -15,9 +16,30 @@ type HomeProps = {
 function Home({user}:HomeProps) {
   const API = import.meta.env.VITE_WORKER_API;
   const [ activePanel, setActivePanel ] = useState<string | null>(null)
-  const [myList, setMyList] = useState<ListItem[]>([]);
-  const [favs, setFavs] = useState<DbProduct[] | null>(null);
+  const [ myList, setMyList ] = useState<ListItem[]>([]);
+  const [ favs, setFavs ] = useState<DbProduct[] | null>(null);
   const [ country, setCountry ] = useState<string>(user.country);
+  const [ showSettings, setShowSetting ] = useState<boolean>(false);
+
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const settingsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (
+        !settingsRef.current?.contains(e.target as Node) &&
+        settingsRef.current &&
+        showSettings &&
+        btnRef.current &&
+        !btnRef.current.contains(e.target as Node)
+      ) {
+        setShowSetting(false);
+      }
+    }
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [showSettings]);
 
   async function getFavs(userId: number) {
     const req = await fetch(`${API}/getFavoriteProducts`, {
@@ -107,13 +129,53 @@ function Home({user}:HomeProps) {
     selected.classList.add(`${styles.selected}`)
   }
 
-  useEffect(() => { getMyList(user.id); }, [])
+
+
+  async function setTheme(e: React.ChangeEvent<HTMLSelectElement>){
+    e.stopPropagation();
+    const num = Number(e.currentTarget.value);
+    if(!num) return;
+
+    const req = await fetch(`${API}/set-theme`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        userId: user.id,
+        theme: num
+      })
+    })
+
+    const res = await req.json();
+    
+    if(res.ok){
+      loadTheme(num);
+    }
+  }
+
+  useEffect(() => { 
+    getMyList(user.id);
+    console.log(user) 
+  }, [])
 
 
   return (
     <>
       <h1>Shopping List</h1>
-      <ChangeCountry user={user} country={country} setCountry={setCountry}/>
+      <div className={styles.settings}>
+        <button ref={btnRef} onClick={() => setShowSetting(!showSettings)}>setting</button>
+        {showSettings && <div ref={settingsRef} className={styles["settings-container"]}>
+          <label>Country:
+            <ChangeCountry user={user} country={country} setCountry={setCountry} />
+          </label>          
+          <label>Theme: 
+            <select onChange={(e) => setTheme(e)}>
+              <option value={0}></option>
+              <option value={1}>Theme 1</option>
+              <option value={2}>Theme 2</option>
+            </select>
+          </label>
+        </div>}
+      </div>            
       {!activePanel && <MyList getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
       {activePanel === "create" && <CreateNewProduct />}
       {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country} />}

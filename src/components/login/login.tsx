@@ -2,6 +2,7 @@ import styles from './login.module.css'
 import { Link } from 'react-router-dom'
 import { useRef } from 'react'
 import type { user } from '../../utils/types'
+import { loadTheme } from '../../utils/functions'
 
 type LoginProps = {
     setToken: (value: string) => void;
@@ -37,6 +38,7 @@ export default function Login({setToken, setUser}:LoginProps){
         if(res.ok){
             setUser(res.user)
             setToken(res.token)
+            loadTheme(res.user.theme)
             localStorage.setItem("shopping-list", res.token)
             return;
         }
