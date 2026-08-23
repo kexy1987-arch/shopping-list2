@@ -199,7 +199,7 @@ function Home({user}:HomeProps) {
           </label>
         </div>}
       </div>            
-      {!activePanel && <MyList wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} />}
+      {!activePanel && <MyList wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} updateList={updateList} userId={user.id} />}
       {activePanel === "create" && <CreateNewProduct />}
       {activePanel === "global-list" && <GlobalList myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country} />}
       {activePanel === "favorites" && <Favorites favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs} />}

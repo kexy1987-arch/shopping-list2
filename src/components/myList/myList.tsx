@@ -6,7 +6,7 @@ import NotifBar from '../notifbar/notifbar';
 
 type MyListProps = {
     myList: ListItem[],
-    setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
+   // setMyList: React.Dispatch<React.SetStateAction<ListItem[]>>,
     updateList: (userId: number, myList: ListItem[]) => void,
     userId: number,
     getFavs: (value: number) => void;
@@ -16,7 +16,7 @@ type MyListProps = {
     wsRef: React.RefObject<WebSocket | null>
 }
 
-export default function MyList({ myList, wsRef, getMyList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
+export default function MyList({ myList, wsRef, getMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [grouped, setGrouped ] = useState<Record<string, DbProduct[] | undefined>>();
@@ -78,7 +78,6 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
         })
         const res = await req.json();
         if ( res.ok ){
-            setMyList(updated)
             wsRef.current?.send(JSON.stringify(userId))
         }
         if ( !res.ok ) {
@@ -90,7 +89,7 @@ export default function MyList({ myList, wsRef, getMyList, setMyList, updateList
     function deleteItem(e: React.MouseEvent<HTMLButtonElement>, product: DbProduct){
         e.stopPropagation();
         const updated = myList.filter(item => item.id !== product.id);
-        setMyList(updated);
+        wsRef.current?.send(JSON.stringify(userId))
         if(myList.length <= 1)setPrice(0);
         updateList(userId, updated);
         setNotif(`${titleCase(product.name)} removed from your list.`)
