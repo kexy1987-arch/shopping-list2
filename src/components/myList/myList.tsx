@@ -12,10 +12,11 @@ type MyListProps = {
     getFavs: (value: number) => void;
     favs: DbProduct[] | null;
     delFav: (userId: number, productId: number) => void;
-    getMyList: (value: number) => void
+    getMyList: (value: number) => void,
+    wsRef: React.RefObject<WebSocket | null>
 }
 
-export default function MyList({ myList, getMyList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
+export default function MyList({ myList, wsRef, getMyList, setMyList, updateList, userId, favs, getFavs, delFav}:MyListProps) {
     const API = import.meta.env.VITE_WORKER_API;
     const [myListItems, setMyListItems] = useState<DbProduct[]>([])
     const [grouped, setGrouped ] = useState<Record<string, DbProduct[] | undefined>>();
@@ -23,6 +24,8 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
     const [stores, setStores] = useState<Stores[]>([]);
     const [price, setPrice] = useState<number>(0);
     const [notif, setNotif] = useState<string>("");
+
+    console.log(getMyList)
 
 
     async function getMyListItems(myList: ListItem[]) {
@@ -132,7 +135,8 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
 
         const res = await req.json();
         if(res.ok){
-            getMyList(userId)
+            //getMyList(userId)
+            wsRef.current?.send(String(userId));
         }
         if(!res.ok){
             console.log(res.error);
@@ -204,27 +208,13 @@ export default function MyList({ myList, getMyList, setMyList, updateList, userI
 
         const res = await req.json();
         if (res.ok) {
-            getMyList(userId)
+        //    getMyList(userId)
+            wsRef.current?.send(String(userId));
         }
         if (!res.ok) {
             console.log(res.error);
         }
     }
-
-    /*
-    useEffect(() => {
-      const ws = new WebSocket(`wss://your-domain/ws/my-list?user_id=${userId}`);
-    
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log("List update:", data);
-        setMyList(data.data);
-      };
-    
-      return () => ws.close();
-    }, [userId]);
-
-    */
     
     return(
         <div className={styles.main}>
