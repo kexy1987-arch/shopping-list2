@@ -13,11 +13,11 @@ export default function NotifBar({message}: NotifBarProps){
         setToRender(message);
         if (message){
             setTimeout(() => {
-                if (notifRef.current) notifRef.current.style.opacity = "1";
+                if (notifRef.current) notifRef.current.style.transform = "translateY(0px)";
             }, 100)
 
             setTimeout(() => {
-                if (notifRef.current) notifRef.current.style.opacity = "0";
+                if (notifRef.current) notifRef.current.style.transform = "translateY(-100px)";
             }, 5000)
         }
         
