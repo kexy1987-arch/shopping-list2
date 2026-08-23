@@ -8,7 +8,7 @@ import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
 import { hc } from 'hono/client'
-import type app from '@eslint/js'
+import type app from './server'
 
 
 type HomeProps = {
