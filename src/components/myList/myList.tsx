@@ -64,9 +64,7 @@ export default function MyList({ myList, wsRef, getMyList, updateList, userId, f
 
     async function updateAmount( e: React.MouseEvent<HTMLButtonElement>, listItem: ListItem, delta: number ){
         e.stopPropagation();
-
-        const updated = myList.map(item => item.id === listItem.id ? { ...item, amount: item.amount + delta } : item)
-        
+     
         const req = await fetch(`${API}/increaseamount`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
