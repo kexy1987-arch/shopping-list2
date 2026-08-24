@@ -3,6 +3,7 @@
     position: fixed;
     bottom: 2%;
     left: 50%;
+    height: 3rem;
     transform: translate(-50%);
     overflow: hidden;
     border-radius: 2rem;
