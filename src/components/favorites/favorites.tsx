@@ -98,7 +98,7 @@ export default function Favorites({favs, setMessage, delFav, userId, myList, set
                 </div>
             ))
                 : 
-                <Modal message={<h2>No Favorites yet</h2>} />                
+                <Modal message={"No Favorites yet"} />                
             }
             {itemDescription &&
                 <Modal message={<div className={styles["description-modal"]} onClick={() => setItemDescription(null)}>

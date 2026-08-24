@@ -202,8 +202,10 @@ h2 {
   }
 }
 
+
 h1, h2, h3{
-  color: var(--home-sel-bg) !important;
+  color: var(--theme-text2-color) !important;
+  text-shadow: 2px 2px 2px var(--theme-text-color);
 }
 p {
   margin: 0;

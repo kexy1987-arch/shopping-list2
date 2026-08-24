@@ -8,7 +8,6 @@ import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
 import NotifBar from '../../components/notifbar/notifbar';
-import { transform } from 'framer-motion';
 
 
 type HomeProps = {
@@ -21,7 +20,7 @@ function Home({user}:HomeProps) {
   const [ myList, setMyList ] = useState<ListItem[]>([]);
   const [ favs, setFavs ] = useState<DbProduct[] | null>(null);
   const [ country, setCountry ] = useState<string>(user.country);
-  const [ showSettings, setShowSetting ] = useState<boolean>(true);
+  const [ showSettings, setShowSetting ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<string>("");
 
   const btnRef = useRef<HTMLButtonElement>(null);
