@@ -198,27 +198,30 @@ function Home({user}:HomeProps) {
 
   return (
     <>
-      <NotifBar message={message} />
-      <h1>Shopping List</h1>
-      <div className={styles.settings}>
-        <button ref={btnRef} onClick={handleSettingsBtn}>setting</button>
-        <div ref={settingsRef} className={styles["settings-container"]}>
-          <label>Country:
-            <ChangeCountry user={user} country={country} setCountry={setCountry} />
-          </label>          
-          <label>Theme: 
-            <select className={styles["theme-sel"]} onChange={(e) => setTheme(e)}>
-              <option value={0}></option>
-              <option className={styles.theme1} value={1}>Theme 1</option>
-              <option className={styles.theme2} value={2}>Theme 2</option>
-            </select>
-          </label>
+      <div className={styles.grid}>
+        <NotifBar message={message} />
+        <h1>Shopping List</h1>
+        <div className={styles.settings}>
+          <button ref={btnRef} onClick={handleSettingsBtn}>setting</button>
+          <div ref={settingsRef} className={styles["settings-container"]}>
+            <label>Country:
+              <ChangeCountry user={user} country={country} setCountry={setCountry} />
+            </label>
+            <label>Theme:
+              <select className={styles["theme-sel"]} onChange={(e) => setTheme(e)}>
+                <option value={0}></option>
+                <option className={styles.theme1} value={1}>Theme 1</option>
+                <option className={styles.theme2} value={2}>Theme 2</option>
+              </select>
+            </label>
+          </div>
         </div>
-      </div>            
-      {<MyList setMessage={setMessage} wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} updateList={updateList} userId={user.id} />}
-      {activePanel === "create" && <CreateNewProduct />}
-      {activePanel === "global-list" && <GlobalList setMessage={setMessage} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country} />}
-      {activePanel === "favorites" && <Favorites setMessage={setMessage} favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs} />}
+        {<MyList setMessage={setMessage} wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} updateList={updateList} userId={user.id} />}
+        {activePanel === "create" && <CreateNewProduct />}
+        {activePanel === "global-list" && <GlobalList setMessage={setMessage} myList={myList} setMyList={setMyList} updateList={updateList} userId={user.id} getFavs={getFavs} favs={favs} delFav={delFav} country={country} />}
+        {activePanel === "favorites" && <Favorites setMessage={setMessage} favs={favs} delFav={delFav} userId={user.id} myList={myList} setMyList={setMyList} updateList={updateList} getFavs={getFavs} />}
+
+      </div>
       
       <div className={styles["btn-container"]}>
         <button className={`${styles["new-product-btn"]} ${styles.btn}`} onClick={(e) => handlePanelToggle(e, "create")}>{activePanel === "create" ? "x": "New Product"}</button>        
