@@ -259,9 +259,7 @@ export default function CreateNewProduct(){
                     <select ref={categoryRef} id="category" name="category" autoComplete="off" onChange={(e) => handleInputs(e)}>
                         <option></option>
                         {catList.map(cat => (
-                            <>
                                 <option key={cat} value={cat}>{cat}</option>
-                            </>
                         ))}
                     </select>
                 </div>
