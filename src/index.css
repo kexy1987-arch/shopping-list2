@@ -155,7 +155,7 @@
 
 #root {
   
-  width: 1126px;
+  width: 900px;
   max-width: 100%;
   min-width: 380px;
   margin: 0 auto;
@@ -235,16 +235,16 @@ span button{
 
 .z-index{
   position: absolute;
-  z-index: 99;
+  z-index: 2;
   background-color: #08060dd3;
   width: 90%;
   height: 90%;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 70px;
+  transform: translateY(-50%);
   border: 3px solid white;
   border-radius: 1rem;
-  max-width: 1124px;
+  max-width: 400px;
   overflow-y: scroll;
   scrollbar-width: none;
 }
@@ -255,12 +255,11 @@ span button{
 
 .fixed{
   position: fixed;
-  top: -1rem;
-  left: 0px;
+  top: -1.1rem;
+  left: -0.1rem;
   border-bottom-right-radius: 1rem;
   border-top-left-radius: 1rem;
-  background-color: #08060dd3;
-  color: white;
+  background-color: var(--theme-main-color);
   padding: 0.4rem 1rem;
 }
 
