@@ -8,6 +8,7 @@ import type { user, ListItem, DbProduct } from '../../utils/types';
 import ChangeCountry from '../../components/changeCountry/changeCountry';
 import { loadTheme } from '../../utils/functions';
 import NotifBar from '../../components/notifbar/notifbar';
+import { transform } from 'framer-motion';
 
 
 type HomeProps = {
@@ -20,7 +21,7 @@ function Home({user}:HomeProps) {
   const [ myList, setMyList ] = useState<ListItem[]>([]);
   const [ favs, setFavs ] = useState<DbProduct[] | null>(null);
   const [ country, setCountry ] = useState<string>(user.country);
-  const [ showSettings, setShowSetting ] = useState<boolean>(false);
+  const [ showSettings, setShowSetting ] = useState<boolean>(true);
   const [ message, setMessage ] = useState<string>("");
 
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -62,6 +63,15 @@ function Home({user}:HomeProps) {
       ) {
         setShowSetting(false);
       }
+    }
+    const settings = settingsRef.current;
+
+    if (!settings) return;
+
+    if (showSettings) {
+      settings.style.transform = "translate(15%, -13.5%)"
+    } else {
+      settings.style.transform = "translate(-150%, -13.5%)"
     }
 
     document.addEventListener("click", handleClick);
@@ -182,14 +192,18 @@ function Home({user}:HomeProps) {
     }
   }
 
+  function handleSettingsBtn(){
+    setShowSetting(!showSettings);    
+  }
+
 
   return (
     <>
       <NotifBar message={message} />
       <h1>Shopping List</h1>
       <div className={styles.settings}>
-        <button ref={btnRef} onClick={() => setShowSetting(!showSettings)}>setting</button>
-        {showSettings && <div ref={settingsRef} className={styles["settings-container"]}>
+        <button ref={btnRef} onClick={handleSettingsBtn}>setting</button>
+        <div ref={settingsRef} className={styles["settings-container"]}>
           <label>Country:
             <ChangeCountry user={user} country={country} setCountry={setCountry} />
           </label>          
@@ -200,7 +214,7 @@ function Home({user}:HomeProps) {
               <option className={styles.theme2} value={2}>Theme 2</option>
             </select>
           </label>
-        </div>}
+        </div>
       </div>            
       {!activePanel && <MyList setMessage={setMessage} wsRef={wsRef} getMyList={getMyList} favs={favs} getFavs={getFavs} delFav={delFav} myList={myList} updateList={updateList} userId={user.id} />}
       {activePanel === "create" && <CreateNewProduct />}
