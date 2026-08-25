@@ -255,8 +255,8 @@ export default function MyList({ myList, setMessage, wsRef, getMyList, updateLis
                                                     {(product.price * item.amount!).toFixed(2)}{currencyMap(product.country)}
                                                 </div>
                                                 <div>
-                                                    {item && <span><button onClick={(e) => updateAmount(e, item, 1)}>+</button><button onClick={((e) => updateAmount(e, item, -1))}>-</button></span>}
-                                                    {item && <button onClick={(e) => deleteItem(e, product)}>X</button>}
+                                                    {item && <span><button className={styles.btn} onClick={(e) => updateAmount(e, item, 1)}>+</button><button className={styles.btn} onClick={((e) => updateAmount(e, item, -1))}>-</button></span>}
+                                                    {item && <button className={styles.btn} onClick={(e) => deleteItem(e, product)}>X</button>}
                                                 </div>
                                             </div>
                                         </div>

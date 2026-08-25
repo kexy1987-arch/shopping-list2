@@ -62,3 +62,10 @@
 .head{
     display: flex;
 }
+
+.btn{
+    margin: 0.1rem;
+    padding: 0px;
+    height: 30px;
+    border-radius: 1rem;
+}
